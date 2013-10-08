@@ -16,3 +16,12 @@ Work-task-board is a co-operative white board. Up to now, it is just support the
 * Comments your parter's tasks;
 * Role-based access control;
 * User avatar supporting;
+
+***How to prepare your environment?***
+======================================
+
+***Requirements***
+* Ubuntu 12.04.3, http://www.ubuntu.com/
+* Python 2.7.5, http://www.python.org/
+* Bottle 0.11, http://bottlepy.org/docs/dev/
+* Jinjia2, http://jinja.pocoo.org/
