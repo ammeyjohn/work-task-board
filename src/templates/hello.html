@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hello World</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link type="text/css" rel="stylesheet" href="../static/bootstrap-3.0.0/css/bootstrap.min.css">
+<script type="text/javascript" src="../static/scripts/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="../static/bootstrap-3.0.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+			$('#btn-submit').click(function(){
+				var txt = $('#task').val();
+				var row = $('<tr><td>' + txt + '</td></tr>');
+				$('#tbl_task').prepend(row);
+				});
+	});
+</script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<label for="task">Task</label>
+					<input class="form-control input.lg" id="task" placeholder="What are you doing ...">
+				</div>
+				<button id='btn-submit' type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="table-responsive">
+					<table id="tbl_task" class="table table-hover">
+						<tr> <td> <h1>ssssss</h1></td> </tr>
+						<tr> <td>ssssss</td> </tr>
+						<tr> <td>ssssss</td> </tr>
+						<tr> <td>ssssss</td> </tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
