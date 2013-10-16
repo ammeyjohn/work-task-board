@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Hello World</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link type="text/css" rel="stylesheet" href="style/bootstrap.min.css">
-<script type="text/javascript" src="scripts/jquery-2.0.3.min.js"></script>
-<script type="text/javascript" src="scripts/bootstrap.min.js"></script>
+{% extends "base.html" %}
+{% block header %}
 <script type="text/javascript">
 	$(function(){
 			$('#btn-submit').click(function(){
@@ -15,8 +9,8 @@
 				});
 	});
 </script>
-</head>
-<body>
+{% endblock header %}
+{% block content %}
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
@@ -42,5 +36,6 @@
 			</div>
 		</div>
 	</div>
-</body>
-</html>
+{% endblock content %}
+{% block footer %}
+{% endblock footer %}
