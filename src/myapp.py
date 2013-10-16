@@ -4,9 +4,9 @@
 from libs.bottle import route, run, template, static_file
 
 
-@route("/hello/<name>")
-def index(name='World'):
-    return template('./templates/hello.html', name=name)
+@route("/hello/<title>")
+def index(title='World'):
+    return template('./templates/base.html', title=title)
 
 
 @route("/static/<filename:path>")
@@ -14,4 +14,4 @@ def static(filename):
     return static_file(filename, root='static/')
 
 
-run(reloader=True, host='localhost', port=8080)
+run(reloader=True, host='localhost', port=8081)
