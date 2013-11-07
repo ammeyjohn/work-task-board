@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 27
+/worktaskboard/!svn/ver/1/1
+END
+config.yaml
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/worktaskboard/!svn/ver/1/1/config.yaml
+END
+myapi.py
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/worktaskboard/!svn/ver/4/1/myapi.py
+END
+task.py
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/worktaskboard/!svn/ver/4/1/task.py
+END
+db.py
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/worktaskboard/!svn/ver/4/1/db.py
+END
+index.wsgi
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/worktaskboard/!svn/ver/3/1/index.wsgi
+END
