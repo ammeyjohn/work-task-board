@@ -1,6 +1,7 @@
 CREATE TABLE tasks(
 	id INT NOT NULL AUTO_INCREMENT,
 	content NVARCHAR(4000),
+	type INT NOT NULL,
     status INT NOT NULL,
     create_time DATETIME NOT NULL,
     update_time DATETIME NOT NULL

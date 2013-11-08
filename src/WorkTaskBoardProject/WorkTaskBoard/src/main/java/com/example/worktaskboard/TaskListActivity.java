@@ -58,7 +58,7 @@ public class TaskListActivity extends Activity {
     private void initinalActivity() {
         try {
             HttpClient client = new DefaultHttpClient();
-            HttpGet request = new HttpGet("http://worktaskboard.sinaapp.com/tasks/list/5");
+            HttpGet request = new HttpGet("http://worktaskboard.sinaapp.com/tasks/list");
             HttpResponse response = client.execute(request);
 
             String html = "";

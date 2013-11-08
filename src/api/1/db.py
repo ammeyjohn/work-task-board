@@ -1,4 +1,5 @@
 from sae import const
+import traceback
 import MySQLdb
 
 MYSQL_DB     = const.MYSQL_DB 
@@ -30,14 +31,16 @@ def exec_query(sql, count=None):
 	try:
 		global __conn, __cursor
 		__create_mysql_connection()
+		__cursor.execute('SET NAMES utf8')
 		__cursor.execute(sql)
+		print sql
 		if count is None or count <= 0:
 			results = __cursor.fetchall()
 		else:
 			results = __cursor.fetchmany(count)
 		return results
 	except:
-		print trace_back()   
+		traceback.print_exc()
 		return None
 	finally: 
 		__close_mysql_connection()
@@ -47,9 +50,9 @@ def exec_command(sql, params=None):
 		global __conn, __cursor
 		__create_mysql_connection()
 		__cursor.execute(sql, params);	
-		__close_mysql_connection();
+		print sql
 	except:
-		print trace_back()
+		traceback.print_exc()
 		return False
 	finally:
 		__close_mysql_connection()
