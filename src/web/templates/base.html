@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>{{ title }} - work task board</title>
+    <link rel="stylesheet" type="text/css" href="/static/styles/main.css" />
+    <link type="text/css" rel="stylesheet" href="/static/styles/bootstrap.min.css">
+    <script type="text/javascript" src="/static/scripts/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="/static/scripts/bootstrap.min.js"></script>
+    {% block header %}
+    {% endblock header %}
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h1>{{ title }}</h1>
+            <hr />
+        </div>
+        <div class="container">
+            {% block content %}
+            {% endblock content %}
+        </div>
+        <div class="footer">
+        <hr />
+        <p>Copyright © 2013 Shanghai3h.com</p>
+        </div>
+    </div>
+    {% block footer %}
+    {% endblock footer %}
+</body>
+</html>

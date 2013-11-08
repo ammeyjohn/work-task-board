@@ -1,0 +1,8 @@
+CREATE TABLE tasks(
+	id INT NOT NULL AUTO_INCREMENT,
+	content NVARCHAR(4000),
+    status INT NOT NULL,
+    create_time DATETIME NOT NULL,
+    update_time DATETIME NOT NULL
+	PRIMARY KEY (id)
+) ENGINE=MyISAM;
