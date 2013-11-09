@@ -1,9 +1,12 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from sae import const
 import traceback
 import MySQLdb
 
-MYSQL_DB     = const.MYSQL_DB 
-MYSQL_USER   = const.MYSQL_USER 
+MYSQL_DB     = const.MYSQL_DB
+MYSQL_USER   = const.MYSQL_USER
 MYSQL_PASS   = const.MYSQL_PASS 
 MYSQL_HOST_M = const.MYSQL_HOST
 MYSQL_PORT   = int(const.MYSQL_PORT)
@@ -28,12 +31,12 @@ def __close_mysql_connection():
 	   __conn = None
 
 def exec_query(sql, count=None):
+	__print_debug_sql(sql)
 	try:
 		global __conn, __cursor
 		__create_mysql_connection()
 		__cursor.execute('SET NAMES utf8')
 		__cursor.execute(sql)
-		print sql
 		if count is None or count <= 0:
 			results = __cursor.fetchall()
 		else:
@@ -45,14 +48,38 @@ def exec_query(sql, count=None):
 	finally: 
 		__close_mysql_connection()
 
-def exec_command(sql, params=None):
+def exec_query_scale(sql, params=None):
+	__print_debug_sql(sql, params)
 	try:
 		global __conn, __cursor
 		__create_mysql_connection()
-		__cursor.execute(sql, params);	
+		__cursor.execute(sql)
+		return __cursor.fetchone()	
+	except:
+		traceback.print_exc()
+		return None 
+	finally:
+		__close_mysql_connection()
+
+def exec_command(sql, params=None):
+	__print_debug_sql(sql, params)
+	try:
+		global __conn, __cursor
+		__create_mysql_connection()
+		if params is None:
+			__cursor.execute(sql)	
+		else:
+			__cursor.execute(sql, params)	
 		print sql
+		return True
 	except:
 		traceback.print_exc()
 		return False
 	finally:
 		__close_mysql_connection()
+
+def __print_debug_sql(sql, params=None):
+	print '[DEBUG] ' + sql
+	if params is not None:
+		for p in params:
+			print '[DEBUG] ' + p

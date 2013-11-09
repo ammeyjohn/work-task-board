@@ -1,17 +1,26 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import json
+from json import JSONEncoder, dumps
 import datetime
 
-class ComplexEncoder(json.JSONEncoder):
+class ComplexEncoder(JSONEncoder):
 	def default(self, obj):
 		if isinstance(obj, complex):
 			return [obj.real, obj.imag]
-		return json.JSONEncoder.default(self, obj)
+		return JSONEncoder.default(self, obj)
 
-class DateTimeEncoder(json.JSONEncoder):
+class DateTimeEncoder(JSONEncoder):
 	def default(self, obj):
 		if isinstance(obj, datetime.datetime):
 			return obj.isoformat()
-		return json.JSONEncoder.default(self, obj)
+		return JSONEncoder.default(self, obj)
+
+def api_return(a, o, r=None):
+	obj = {'action': a}
+	if o is not None: obj['obj'] = o
+	if r is not None: obj['result'] = r
+	else: 
+		if o is not None: 
+			obj['result'] = True
+	return dumps(obj, cls=DateTimeEncoder, ensure_ascii=False)
