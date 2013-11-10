@@ -2,12 +2,13 @@ package com.example.worktaskboard;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by patrick on 11/6/13.
  */
-public class Task {
+public class Task implements Serializable {
 
     @SerializedName("id")
     private int taskId;

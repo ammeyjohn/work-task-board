@@ -12,6 +12,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:id="@id/txtItemText"
-                android:textSize="30dip">
+                android:textSize="20dip"
+            android:textColor="#ffffff">
         </TextView>
 </LinearLayout>

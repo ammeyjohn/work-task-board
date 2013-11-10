@@ -10,5 +10,8 @@
         android:id="@id/lsvTasks"
         android:layout_gravity="center"
         android:smoothScrollbar="true"
-        android:fadeScrollbars="true"/>
+        android:fadeScrollbars="true"
+        android:background="@android:color/background_dark"
+        android:textFilterEnabled="false"
+        android:fastScrollEnabled="true" />
 </FrameLayout>

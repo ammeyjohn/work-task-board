@@ -28,6 +28,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,13 +77,18 @@ public class TaskListActivity extends Activity {
                 }
 
                 Gson gson = new Gson();
-                List<Task> tasks = gson.fromJson(html, new TypeToken<List<Task>>(){}.getType());
+                Type type = new TypeToken<ApiResponse<List<Task>>>(){}.getType();
+                ApiResponse<List<Task>> apiResp = gson.fromJson(html, type);
 
-                Message msg = new Message();
-                msg.obj = tasks;
-                handler.sendMessage(msg);
+                if(apiResp.getResult() == Boolean.TRUE) {
+                    Message msg = new Message();
+                    msg.obj = apiResp.getData();
+                    handler.sendMessage(msg);
+                }
             }
         } catch (IOException e) {
+            Log.e("TAG", e.getMessage());
+        } catch (Exception e) {
             Log.e("TAG", e.getMessage());
         }
     }
