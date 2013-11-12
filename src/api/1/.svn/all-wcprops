@@ -1,19 +1,7 @@
 K 25
 svn:wc:ra_dav:version-url
-V 27
-/worktaskboard/!svn/ver/5/1
-END
-task.py
-K 25
-svn:wc:ra_dav:version-url
-V 35
-/worktaskboard/!svn/ver/9/1/task.py
-END
-db.py
-K 25
-svn:wc:ra_dav:version-url
-V 34
-/worktaskboard/!svn/ver/11/1/db.py
+V 28
+/worktaskboard/!svn/ver/25/1
 END
 index.wsgi
 K 25
@@ -38,4 +26,16 @@ K 25
 svn:wc:ra_dav:version-url
 V 36
 /worktaskboard/!svn/ver/9/1/utils.py
+END
+task.py
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/worktaskboard/!svn/ver/19/1/task.py
+END
+db.py
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/worktaskboard/!svn/ver/25/1/db.py
 END

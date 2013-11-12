@@ -35,7 +35,6 @@ def exec_query(sql, count=None):
 	try:
 		global __conn, __cursor
 		__create_mysql_connection()
-		__cursor.execute('SET NAMES utf8')
 		__cursor.execute(sql)
 		if count is None or count <= 0:
 			results = __cursor.fetchall()
@@ -51,8 +50,8 @@ def exec_query(sql, count=None):
 def exec_query_scale(sql, params=None):
 	__print_debug_sql(sql, params)
 	try:
-		global __conn, __cursor
-		__create_mysql_connection()
+		global __conn, __cursor       
+		__create_mysql_connection()        
 		__cursor.execute(sql)
 		return __cursor.fetchone()	
 	except:
@@ -66,9 +65,10 @@ def exec_command(sql, params=None):
 	try:
 		global __conn, __cursor
 		__create_mysql_connection()
-		if params is None:
+        
+		if params is None:           
 			__cursor.execute(sql)	
-		else:
+		else:            
 			__cursor.execute(sql, params)	
 		print sql
 		return True
@@ -81,5 +81,6 @@ def exec_command(sql, params=None):
 def __print_debug_sql(sql, params=None):
 	print '[DEBUG] ' + sql
 	if params is not None:
+		i = 0
 		for p in params:
-			print '[DEBUG] ' + p
+			print '[DEBUG] param[%d]=' % (++i) + str(p)
