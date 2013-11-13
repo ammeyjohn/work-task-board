@@ -40,9 +40,19 @@ def add_task(task):
 	if id is not None: return id[0]
 	return None
 
-
-def modify_task(task):
-	return True
+def modify_task(id, content=None, status=None):
+	sql_str = '' 
+	sql_param = []
+	if content is not None:
+		sql_str += ',content=%s'
+		sql_param.append(content)
+	if status is not None:
+		sql_str += ',status=%s'
+		sql_param.append(status)
+	if sql_str != '':
+		sql_str = 'UPDATE tasks SET ' + sql_str[1:] + ' WHERE id=%s'
+		sql_param.append(id)
+	return db.exec_command(sql_str, sql_param)		
 
 def del_task(id):
 	sql_str = 'UPDATE tasks SET status = %s WHERE id=%s'

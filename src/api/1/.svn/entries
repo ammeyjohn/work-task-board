@@ -26,77 +26,6 @@ Ammeyjohn@gmail.com
 
 880c6e4b-9a4b-44cb-b30b-9b79c9ab0cf7
 
-libs
-dir
-
-task.py
-file
-
-
-
-
-2013-11-12T15:02:38.869460Z
-28b06158b9e1ff577cd3db531e77935d
-2013-11-10T14:21:21.074331Z
-19
-Ammeyjohn@gmail.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-1241
-
-db.py
-file
-
-
-
-
-2013-11-12T12:56:07.757546Z
-63a5f2f4911d548fc0d528acde9fced5
-2013-11-10T14:25:56.183561Z
-25
-Ammeyjohn@gmail.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-1885
-
 index.wsgi
 file
 
@@ -134,28 +63,8 @@ ammeyjohn@gmail.com
 sql
 dir
 
-task.branch.py
-file
-
-
-
-add
-
-28b06158b9e1ff577cd3db531e77935d
-
-
-
-
-
-
-
-
-
-
-
-copied
-https://svn.sinaapp.com/worktaskboard/1/task.py
-25
+models
+dir
 
 config.yaml
 file
@@ -193,14 +102,14 @@ file
 
 myapi.py
 file
+26
 
 
 
-
-2013-11-09T11:42:29.343470Z
-ba97792755fd1017a21361bcfc8381c0
-2013-11-09T13:31:20.724489Z
-9
+2013-11-13T15:42:50.857473Z
+4da72590e93e5b78fdc849341f5503d2
+2013-11-13T15:48:05.915088Z
+26
 ammeyjohn@gmail.com
 
 
@@ -223,7 +132,7 @@ ammeyjohn@gmail.com
 
 
 
-764
+1290
 
 utils.py
 file
@@ -258,4 +167,75 @@ ammeyjohn@gmail.com
 
 
 663
+
+libs
+dir
+
+task.py
+file
+26
+
+
+
+2013-11-13T15:41:01.649475Z
+affd6cd6eb1d65ae9bf03ad24371d10e
+2013-11-13T15:48:05.915088Z
+26
+ammeyjohn@gmail.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1591
+
+db.py
+file
+
+
+
+
+2013-11-12T15:48:42.769429Z
+63a5f2f4911d548fc0d528acde9fced5
+2013-11-10T14:25:56.183561Z
+25
+Ammeyjohn@gmail.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1885
 
