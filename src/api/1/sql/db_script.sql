@@ -7,3 +7,12 @@ CREATE TABLE tasks(
     update_time DATETIME NOT NULL
 	PRIMARY KEY (id)
 ) ENGINE=MyISAM;
+
+CREATE TABLE projects(
+	id INT NOT NULL AUTO_INCREMENT,
+	name NVARCHAR(50) NOT NULL,
+	status INT NOT NULL,
+    description NVARCHAR(4000),
+    create_time DATETIME NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=MyISAM;

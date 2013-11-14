@@ -35,7 +35,7 @@ def add_task(task):
 	result = db.exec_command(sql_str, sql_param)
 	if result == False: return False
 
-	''' If task has added, we should get the new task id '''
+	''' If task has been added, we should get the new task id '''
 	id = db.exec_query_scale('SELECT MAX(ID) FROM tasks')
 	if id is not None: return id[0]
 	return None
