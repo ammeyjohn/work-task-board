@@ -1,10 +1,12 @@
 CREATE TABLE tasks(
 	id INT NOT NULL AUTO_INCREMENT,
 	content NVARCHAR(4000),
-	type INT NOT NULL,
+	project_id INT NOT NULL,
     status INT NOT NULL,
+	type INT NOT NULL,
+	user_id INT NOT NULL,
     create_time DATETIME NOT NULL,
-    update_time DATETIME NOT NULL
+    update_time DATETIME NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=MyISAM;
 
@@ -12,7 +14,18 @@ CREATE TABLE projects(
 	id INT NOT NULL AUTO_INCREMENT,
 	name NVARCHAR(50) NOT NULL,
 	status INT NOT NULL,
+	user_id INT NOT NULL,
     description NVARCHAR(4000),
+    create_time DATETIME NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=MyISAM;
+
+CREATE TABLE users(
+	id INT NOT NULL AUTO_INCREMENT,
+	name NVARCHAR(50) NOT NULL,
+	password VARCHAR(32) NOT NULL,
+	group_name NVARCHAR(50) NOT NULL,
+	status INT NOT NULL,
     create_time DATETIME NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=MyISAM;

@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from error import ERR_011
+from utils import func_return
 from sae import const
 import traceback
 import MySQLdb
@@ -30,20 +32,20 @@ def __close_mysql_connection():
 	   __conn.close()
 	   __conn = None
 
-def exec_query(sql, count=None):
+def exec_query(sql, params=None, count=None):
 	__print_debug_sql(sql)
 	try:
 		global __conn, __cursor
 		__create_mysql_connection()
-		__cursor.execute(sql)
+		__cursor.execute(sql, params)
 		if count is None or count <= 0:
-			results = __cursor.fetchall()
+			result = __cursor.fetchall()
 		else:
-			results = __cursor.fetchmany(count)
-		return results
-	except:
+			result = __cursor.fetchmany(count)
+		return func_return(True, result)
+	except BaseException, e:
 		traceback.print_exc()
-		return None
+		return func_return(False, msg=ERR_011, ex=e)
 	finally: 
 		__close_mysql_connection()
 
@@ -53,10 +55,11 @@ def exec_query_scale(sql, params=None):
 		global __conn, __cursor       
 		__create_mysql_connection()        
 		__cursor.execute(sql)
-		return __cursor.fetchone()	
-	except:
+		result = __cursor.fetchone()	
+		return func_return(True, result)
+	except BaseException, e:
 		traceback.print_exc()
-		return None 
+		return func_return(False, msg=ERR_011, ex=e)
 	finally:
 		__close_mysql_connection()
 
@@ -67,14 +70,14 @@ def exec_command(sql, params=None):
 		__create_mysql_connection()
         
 		if params is None:           
-			__cursor.execute(sql)	
+			result = __cursor.execute(sql)	
 		else:            
-			__cursor.execute(sql, params)	
-		print sql
-		return True
-	except:
+			result = __cursor.execute(sql, params)	
+
+		return func_return(True, result)
+	except BaseException, execute:
 		traceback.print_exc()
-		return False
+		return func_return(False, msg=ERR_011, ex=e)
 	finally:
 		__close_mysql_connection()
 
@@ -83,4 +86,5 @@ def __print_debug_sql(sql, params=None):
 	if params is not None:
 		i = 0
 		for p in params:
-			print '[DEBUG] param[%d]=' % (++i) + str(p)
+			print '[DEBUG] param[%d]=' % i + str(p)
+			i += 1
