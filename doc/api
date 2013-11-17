@@ -1,0 +1,103 @@
+API说明文档
+
+返回数据格式
+{
+  "action": "task_list",
+  "obj": ,
+  "result": true
+}
+返回列表参数说明
+action 		操作内容，根据操作不同会返回不同值
+result 		操作结果（true: 操作成功; false：操作失败）
+obj			返回对象
+
+tasks
+/tasks/list     #显示所有任务
+参数列表
+t    	任务类型
+s    	任务状态
+uid  	任务发布用户编号
+pid  	任务所在项目编号
+cnt	 	返回任务数量
+返回列表
+{
+  "action": "task_list",
+  "obj": [
+    {
+      "content": "测试任务1",
+      "status": 1,
+      "update_time": "2013-11-17T00:00:00",
+      "create_time": "2013-11-17T00:00:00",
+      "user_id": 1,
+      "project_id": 1,
+      "type": 1,
+      "id": 1
+    },
+    {
+      "content": "测试任务1",
+      "status": 1,
+      "update_time": "2013-11-17T00:00:00",
+      "create_time": "2013-11-17T00:00:00",
+      "user_id": 1,
+      "project_id": 1,
+      "type": 1,
+      "id": 1
+    }
+  ],
+  "result": true
+}
+返回对象说明
+content 		任务内容
+status 			任务状态
+update_time 	任务最后更新时间
+create_time 	任务创建时间
+user_id 		任务创建用户编号
+project_id 		任务所在项目编号
+type 			任务类型
+id 				任务编号
+
+示例
+/tasks/list?t=1&s=1&uid=1&pid=1&cnt=10
+查询任务类型为1,任务状态为新建，创建用户为1,属于项目1的任务列表，并且只返回前10条。
+查询列表中的参数为可选参数，可以全部或者部分填写，也可以不填写。
+
+/task/add 		#添加任务
+参数列表
+c 	 	任务内容
+t 		任务类型 
+uid  	任务发布用户编号
+pid  	任务所在项目编号
+返回列表
+{
+  "action": "task_add",
+  "obj": 2,
+  "result": true
+}
+返回列表参数说明
+obj     将返回新建任务编号
+
+/task/modify 	#修改任务
+参数列表
+id 		任务编号
+c 		新的任务内容
+t 		新的任务类型
+s 		新的任务状态
+返回列表
+{
+  "action": "task_modify",
+  "obj": 2,
+  "result": true
+}
+返回列表参数说明
+obj     将返回更新的任务编号
+
+/task/del 		#删除任务
+参数列表
+id 		任务编号
+{
+  "action": "task_del",
+  "obj": 2,
+  "result": true
+}
+返回列表参数说明
+obj     将返回删除的任务编号
