@@ -5,16 +5,12 @@ from libs.bottle import *
 from utils import *
 import task
 import project 
+import user
 
 ACTION_TASK_LIST   = 'task_list'
 ACTION_TASK_ADD    = 'task_add'
 ACTION_TASK_MODIFY = 'task_modify'
 ACTION_TASK_DEL    = 'task_del'
-
-ACTION_PROJECT_LIST   = 'project_list'
-ACTION_PROJECT_ADD    = 'project_add'
-ACTION_PROJECT_MODIFY = 'project_modify'
-ACTION_PROJECT_DEL    = 'project_del'
 
 app = default_app()
 
@@ -48,6 +44,11 @@ def del_task():
 	result = task.del_task(req_get_dic)
 	return api_return(ACTION_TASK_DEL, result)
 
+ACTION_PROJECT_LIST   = 'project_list'
+ACTION_PROJECT_ADD    = 'project_add'
+ACTION_PROJECT_MODIFY = 'project_modify'
+ACTION_PROJECT_DEL    = 'project_del'
+
 @get('/projects/list')
 def list_projects():
 	projs = project.get_projects()
@@ -55,28 +56,47 @@ def list_projects():
 
 @get('/project/add')
 def add_project():
-	name=request.GET.get('n','')
-	desc=request.GET.get('d','')	
-	if desc == '': desc=None
-	print('add_project: n=%s, d=%s' % (name,desc))
-	id = project.add_project({'name': name, 'status': 1, 'desc': desc})	
-	return api_return(ACTION_PROJECT_ADD, id)
+	req_get_dic = api_get(request, ['n','uid','desc'])
+	result = project.add_project(req_get_dic)	
+	return api_return(ACTION_PROJECT_ADD, result)
 
 @get('/project/modify')
 def modify_project():
-	id      = request.GET.get('id','');
-	name    = request.GET.get('n','');
-	status  = request.GET.get('s','')
-	desc    = request.GET.get('d','')
-	if name == '': name =None
-	if status == '': status=None
-	if desc == '': desc =None
-	print('modify_project: id=%s, n=%s, s=%s, d=%s' % (id, name, status, desc))
-	result = project.modify_project(id, name, status, desc)
-	return api_return(ACTION_PROJECT_MODIFY, id, result)
+	req_get_dic = api_get(request, ['id','n','s','d'])
+	result = project.modify_project(req_get_dic)
+	return api_return(ACTION_PROJECT_MODIFY, result)
 
-@get('/project/del/<id:int>')
-def del_project(id):
-	print('del_project: id=%d' % id)
-	result = project.del_project(id)
-	return api_return(ACTION_PROJECT_DEL, id, result)
+@get('/project/del')
+def del_project():
+	req_get_dic = api_get(request, ['id'])
+	result = project.del_project(req_get_dic)
+	return api_return(ACTION_PROJECT_DEL, result)
+
+ACTION_USER_LIST   = 'user_list'
+ACTION_USER_ADD    = 'user_add'
+ACTION_USER_MODIFY = 'user_modify'
+ACTION_USER_DEL    = 'user_del'
+
+@get('/users/list')
+def list_users():
+	req_get_dic = api_get(request, ['id','n','s','g'])
+	users = user.get_users(req_get_dic)
+	return api_return(ACTION_USER_LIST, users)
+
+@get('/user/add')
+def add_user():
+	req_get_dic = api_get(request, ['n','pwd','g'])
+	result = user.add_user(req_get_dic)	
+	return api_return(ACTION_USER_ADD, result)
+
+@get('/user/modify')
+def modify_user():
+	req_get_dic = api_get(request, ['id','n','s','pwd','g'])
+	result = user.modify_user(req_get_dic)
+	return api_return(ACTION_USER_MODIFY, result)
+
+@get('/user/del')
+def del_user():
+	req_get_dic = api_get(request, ['id'])
+	result = user.del_user(req_get_dic)
+	return api_return(ACTION_USER_DEL, result)
