@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <item name="lsvTasks" type="id">lsvTasks</item>
-    <item name="txtItemTitle" type="id">txtItemTitle</item>
-    <item name="txtItemText" type="id">txtItemText</item>
-</resources>
