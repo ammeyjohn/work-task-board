@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,14 +20,22 @@ import android.widget.Toast;
 
 public class TaskListActivity extends Activity {
 
-	final private Activity Outer = this;
+	final private Activity Outer = this;	
+	final static int WHAT_INIT_TASK_LIST = 1;
 	
-	public final static int WHAT_INIT_TASK_LIST = 1;
+	private int ProjectId = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tasklist);
+		
+		// Get relative project id.
+		Intent intent = getIntent();
+		ProjectId = intent.getIntExtra("id", 0);
+		
+		// For debug to show the project id.
+		Toast.makeText(Outer, "ProjectId=" + ProjectId, Toast.LENGTH_SHORT).show();
 		
 		// Initialize the task list.
 		LoadTasks();
@@ -73,7 +82,7 @@ public class TaskListActivity extends Activity {
 
 	private void initinalActivity() {		
 		TaskVisitor v = new TaskVisitor();
-		List<Task> tasks = v.getTasks();
+		List<Task> tasks = v.getTasks(ProjectId);
 		if(tasks == null) {
 			Toast.makeText(Outer, "Failed to retrieve task list.", Toast.LENGTH_LONG).show();
 		}
@@ -99,8 +108,13 @@ public class TaskListActivity extends Activity {
 			List<Task> tasks = (List<Task>)msg.obj;
             List<Map<String, Object>> contents = new ArrayList<Map<String, Object>>();
             for(int i = 0; i < tasks.size(); i++) {
+            	Task task = tasks.get(i);            	
+            	
                 Map<String, Object> map = new HashMap<String, Object>();
-                map.put("txtItemText", tasks.get(i).getTaskContent());
+                map.put("img", R.drawable.ic_task);
+                map.put("txtContent", task.getTaskContent());
+                map.put("txtStatus", task.getStatus());
+                map.put("txtUpdateTime", task.getUpdateTime());
                 contents.add(map);
             }
 
@@ -108,8 +122,8 @@ public class TaskListActivity extends Activity {
                     Outer,
                     contents,
                     R.layout.layout_taskitem,
-                    new String[]{"txtItemText"},
-                    new int[]{R.id.txtItem}
+                    new String[]{"img","txtContent","txtStatus","txtUpdateTime"},
+                    new int[]{R.id.img,R.id.txtContent,R.id.txtStatus,R.id.txtUpdateTime}
             );
 
             ListView lsvTasks = (ListView)findViewById(R.id.listTasks);

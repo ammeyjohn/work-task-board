@@ -26,4 +26,22 @@ public class TaskVisitor {
         return null;
 	}
 	
+	public List<Task> getTasks(int projectId) {
+		
+		String url = Network.BASE_URL + ACTION_TASK_LIST;
+		if(projectId >= 0) {
+			url += "?pid=" + projectId;
+		}
+		String html = Network.Requst(url);
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<ApiResponse<List<Task>>>(){}.getType();
+        ApiResponse<List<Task>> api = gson.fromJson(html, type);
+        
+        if(api.getResult()) {
+        	return api.getData();
+        }
+        
+        return null;
+	}
 }

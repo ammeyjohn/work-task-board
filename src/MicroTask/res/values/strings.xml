@@ -4,5 +4,6 @@
     <string name="app_name">MicroTask</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_project_list">项目列表</string>
 
 </resources>
