@@ -1,4 +1,4 @@
-package com.fatboy.microtask;
+package com.fatboy.microtask.models;
 
 import java.io.Serializable;
 
@@ -15,7 +15,7 @@ public class Project implements Serializable {
     @SerializedName("status")
     private int status;
     
-    @SerializedName("description")
+    @SerializedName("desc")
     private String description;
 
     @SerializedName("user_id")

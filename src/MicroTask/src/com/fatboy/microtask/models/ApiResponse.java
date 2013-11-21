@@ -1,4 +1,4 @@
-package com.fatboy.microtask;
+package com.fatboy.microtask.models;
 
 import java.io.Serializable;
 

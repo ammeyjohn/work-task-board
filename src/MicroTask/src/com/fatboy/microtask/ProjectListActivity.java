@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fatboy.microtask.models.Project;
+import com.fatboy.microtask.visitors.ProjectVisitor;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -65,7 +68,10 @@ public class ProjectListActivity extends Activity {
 
         switch (item.getItemId()) {
             case R.id.menu_new_project:
-                Toast.makeText(this, "新建", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();     
+                intent.setClass(ProjectListActivity.this, NewProjectActivity.class);
+                startActivity(intent);  
+                this.finish();
                 break;
             case R.id.menu_refresh_projectlist:
             	LoadProjects();
@@ -112,7 +118,7 @@ public class ProjectListActivity extends Activity {
             for(int i = 0; i < projects.size(); i++) {
             	Project prj = projects.get(i);
             	String desc = prj.getDescription();
-            	if(desc == null || desc.length() == 0) {
+            	if(desc == null || desc.isEmpty()) {
             		desc = prj.getProjectName();
             	}
             	

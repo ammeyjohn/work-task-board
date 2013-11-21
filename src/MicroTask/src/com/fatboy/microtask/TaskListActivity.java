@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fatboy.microtask.models.Task;
+import com.fatboy.microtask.visitors.TaskVisitor;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;

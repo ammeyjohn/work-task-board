@@ -1,14 +1,18 @@
-package com.fatboy.microtask;
+package com.fatboy.microtask.visitors;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
+import com.fatboy.microtask.models.ApiResponse;
+import com.fatboy.microtask.models.Task;
+import com.fatboy.microtask.utils.Network;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class TaskVisitor {
 	
 	public final static String ACTION_TASK_LIST = "/tasks/list";
+	public final static String ACTION_TASK_ADD  = "/task/add";
 	
 	public List<Task> getTasks() {
 		
@@ -44,4 +48,12 @@ public class TaskVisitor {
         
         return null;
 	}
+	
+/*	public Boolean createTask(Task task) {
+		
+		String url = Network.BASE_URL + ACTION_TASK_ADD;
+		if (task != null) {
+			url += 
+		}
+	}*/
 }

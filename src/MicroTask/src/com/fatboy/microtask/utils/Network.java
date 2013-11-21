@@ -1,4 +1,4 @@
-package com.fatboy.microtask;
+package com.fatboy.microtask.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
+import java.net.URLEncoder;
+import java.net.URLDecoder;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -27,8 +29,7 @@ public class Network {
 	
 	public static String Requst(String url) {
 				
-		try {
-			
+		try {			
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet(url);
             HttpResponse response = client.execute(request);
