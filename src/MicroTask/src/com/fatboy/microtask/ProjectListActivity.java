@@ -12,12 +12,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnCreateContextMenuListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -34,10 +42,22 @@ public class ProjectListActivity extends Activity {
 		setContentView(R.layout.activity_projectlist);
 		
 		// Initialize the project list.
-		LoadProjects();
+		loadProjects();
 		
-		// Attach onClick event to ListView
+		// Attach events to ListView
 		ListView lsvProjects = (ListView)findViewById(R.id.listProjects);
+		lsvProjects.setOnCreateContextMenuListener(new OnCreateContextMenuListener(){
+
+			@Override
+			public void onCreateContextMenu(ContextMenu menu, View v,
+					ContextMenuInfo menuInfo) {
+				menu.setHeaderTitle("项目操作");
+				menu.add(0, 1, Menu.NONE, "删除");
+				menu.add(0, 2, Menu.NONE, "编辑");					
+			}		
+		});
+		
+		
 		lsvProjects.setOnItemClickListener(new AdapterView.OnItemClickListener() {  
 		    @Override  
 		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {  
@@ -53,7 +73,37 @@ public class ProjectListActivity extends Activity {
 		        // Debug
 		        Toast.makeText(Outer, map.get("txtName").toString(), Toast.LENGTH_SHORT).show();		        
 		    }
-		});  
+		});
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		ListView lsvProjects = (ListView)findViewById(R.id.listProjects);
+		final Map<String, Object> map = (Map<String, Object>)lsvProjects.getAdapter().getItem(info.position);
+		switch(item.getItemId()) {
+		case Menu.FIRST:
+			String name = map.get("txtName").toString();
+			// Show dialog to confirm deleting project.
+			AlertDialog.Builder builder = new Builder(Outer);
+			builder.setMessage("确认删除项目" + name + "吗？");
+			builder.setTitle("提示");
+			builder.setPositiveButton("确认", new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					deleteProject(Integer.parseInt(map.get("id").toString()));
+				}					
+			});
+			builder.setNegativeButton("取消", null);
+			builder.create().show();
+			
+			break;
+		case Menu.FIRST + 1:								
+			break;
+		}
+
+		return false; 
+
 	}
 
 	@Override
@@ -74,17 +124,31 @@ public class ProjectListActivity extends Activity {
                 this.finish();
                 break;
             case R.id.menu_refresh_projectlist:
-            	LoadProjects();
+            	loadProjects();
                 break;
         }
         return false;
     }
 	
-	private void LoadProjects() {
+	private void loadProjects() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				initinalActivity();
+			}
+		}).start();
+	}
+	
+	private void deleteProject(final int projectId) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				ProjectVisitor v = new ProjectVisitor();
+				Boolean r = v.delProject(projectId);
+				
+				if (r) {
+					loadProjects();
+				}
 			}
 		}).start();
 	}
