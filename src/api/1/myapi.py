@@ -69,6 +69,7 @@ def modify_project():
 @get('/project/del')
 def del_project():
 	req_get_dic = api_get(request, ['id'])
+	result = task.del_task(req_get_dic);
 	result = project.del_project(req_get_dic)
 	return api_return(ACTION_PROJECT_DEL, result)
 

@@ -2,21 +2,49 @@
 <resources>
 
     <string name="app_name">MicroTask</string>
+	<string name="content_description">Image</string>
+    
+    <!-- Login -->
+    <!-- ProjectListActivity -->
+    <string name="project_list_context_menu_header_title">项目操作</string>
+    <string name="project_list_context_menu0_name">删除项目</string>
+    <string name="project_list_context_menu1_name">刷新列表</string>
+    <string name="project_list_dialog_message">确认删除项目%s吗？</string>
+    <string name="project_list_dialog_title">提示</string>
+    <string name="project_list_dialog_ok_button">确认</string>
+    <string name="project_list_dialog_cancel_button">取消</string>
+    <string name="project_list_fail_to_load_projects">无法获取最新的项目列表</string>
+    <string name="context_menu_create_project">新建项目</string>
+    <string name="context_menu_refresh_project_list">刷新项目列表</string>
+    
+    <!-- ProjectDetailActivity -->
+    <string name="project_detail_label_project_id">项目编号</string>
+    <string name="project_detail_label_project_name">项目名称</string>
+    <string name="project_detail_label_project_desc">项目说明</string>
+    <string name="project_detail_label_project_user">创建用户</string>
+    <string name="project_detail_label_project_time">创建日期</string>
+
+    
     <string name="action_settings">Settings</string>
-    <string name="title_activity_project_list">Project list</string>
-    <string name="title_activity_new_project">New Project</string>
-    <string name="label_project_name">Project Name</string>
-    <string name="label_project_desc">Description</string>
-    <string name="btn_save_project">Save Project</string>
-    <string name="title_activity_task_detail">Task Detail</string>
-    <string name="lable_task_id">Task Id</string>
-    <string name="lable_task_status">Task Status</string>
-    <string name="lable_task_content">Content</string>
-    <string name="lable_assigned_to">Assign To</string>
-    <string name="lable_title">Title</string>
-    <string name="lable_create_time">Create Time</string>
-    <string name="lable_priority">Priority</string>
-    <string name="lable_expected_complete_date">Complete Date</string>
+    <string name="title_activity_project_list">项目列表</string>
+    <string name="title_activity_project_detail">项目信息</string>
+    <string name="title_activity_task_detail">任务信息</string>
+    <string name="label_task_id">任务编号</string>
+    <string name="label_task_status">任务状态</string>
+    <string name="label_task_content">任务内容</string>
+    <string name="label_assigned_to">任务分派</string>
+    <string name="label_title">头衔</string>
+    <string name="label_create_time">创建时间</string>
+    <string name="label_priority">优先级  </string>
+    <string name="label_expected_complete_date">期望完成时间</string>
     <string name="image_view_disc">image_disc</string>
+    <string name="titlebar_text">详细信息</string>
+    <string name="label_project_id">项目编号</string>
+    <string name="label_project_name">项目名称</string>
+    <string name="label_project_desc">项目描述</string>
+    <string name="label_project_user">创建用户</string>
+    <string name="label_project_time">创建时间</string>
+    <string name="btn_save_detail_project">保存</string>
+    <string name="btn_back_detail_project">返回</string>
 
 </resources>

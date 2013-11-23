@@ -11,6 +11,7 @@ import com.fatboy.microtask.visitors.ProjectVisitor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -37,21 +38,21 @@ public class ProjectListActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_projectlist);
+		setContentView(R.layout.activity_project_list);
 		
 		// Initialize the project list.
 		loadProjects();
 		
 		// Attach events to ListView
-		ListView lsvProjects = (ListView)findViewById(R.id.listProjects);
+		ListView lsvProjects = (ListView)findViewById(R.id.project_list);
 		lsvProjects.setOnCreateContextMenuListener(new OnCreateContextMenuListener(){
 
 			@Override
 			public void onCreateContextMenu(ContextMenu menu, View v,
 					ContextMenuInfo menuInfo) {
-				menu.setHeaderTitle("项目操作");
-				menu.add(0, 1, Menu.NONE, "删除");
-				menu.add(0, 2, Menu.NONE, "编辑");					
+				menu.setHeaderTitle(R.string.project_list_context_menu_header_title);
+				menu.add(0, 1, Menu.NONE, R.string.project_list_context_menu0_name);
+				menu.add(0, 2, Menu.NONE, R.string.project_list_context_menu1_name);
 			}		
 		});
 		
@@ -66,7 +67,7 @@ public class ProjectListActivity extends Activity {
                 Intent intent = new Intent();     
                 intent.setClass(ProjectListActivity.this, TaskListActivity.class);
                 intent.putExtra("id", Integer.parseInt(map.get("id").toString()));
-                startActivity(intent);                
+                startActivity(intent);               
 		    }
 		});
 	}
@@ -74,7 +75,7 @@ public class ProjectListActivity extends Activity {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		ListView lsvProjects = (ListView)findViewById(R.id.listProjects);
+		ListView lsvProjects = (ListView)findViewById(R.id.project_list);
 		@SuppressWarnings("unchecked")
 		final Map<String, Object> map = (Map<String, Object>)lsvProjects.getAdapter().getItem(info.position);
 		switch(item.getItemId()) {
@@ -82,15 +83,17 @@ public class ProjectListActivity extends Activity {
 			String name = map.get("txtName").toString();
 			// Show dialog to confirm deleting project.
 			AlertDialog.Builder builder = new Builder(ProjectListActivity.this);
-			builder.setMessage("确认删除项目" + name + "吗？");
-			builder.setTitle("提示");
-			builder.setPositiveButton("确认", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					deleteProject(Integer.parseInt(map.get("id").toString()));
-				}					
-			});
-			builder.setNegativeButton("取消", null);
+			builder.setMessage(String.format(getString(R.string.project_list_dialog_message), name));
+			builder.setTitle(getString(R.string.project_list_dialog_title));
+			builder.setPositiveButton(getString(R.string.project_list_dialog_ok_button), 
+					new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							deleteProject(Integer.parseInt(map.get("id")
+									.toString()));
+						}
+					});
+			builder.setNegativeButton(getString(R.string.project_list_dialog_cancel_button), null);
 			builder.create().show();
 			
 			break;
@@ -105,7 +108,7 @@ public class ProjectListActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu_projectlist, menu);
+		inflater.inflate(R.menu.menu_project_list, menu);
 		return true;
 	}
 	
@@ -113,13 +116,13 @@ public class ProjectListActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.menu_new_project:
+            case R.id.menu_create_project:
                 Intent intent = new Intent();     
-                intent.setClass(ProjectListActivity.this, NewProjectActivity.class);
+                intent.setClass(ProjectListActivity.this, ProjectDetailActivity.class);
                 startActivity(intent);  
                 this.finish();
                 break;
-            case R.id.menu_refresh_projectlist:
+            case R.id.menu_refresh_project_list:
             	loadProjects();
                 break;
         }
@@ -153,7 +156,8 @@ public class ProjectListActivity extends Activity {
 		ProjectVisitor v = new ProjectVisitor();
 		List<Project> projects = v.getProjects();
 		if(projects == null) {
-			Toast.makeText(ProjectListActivity.this, "Failed to retrieve project list.", Toast.LENGTH_LONG).show();
+			String errmsg = getString(R.string.project_list_fail_to_load_projects);
+			Toast.makeText(ProjectListActivity.this, errmsg, Toast.LENGTH_LONG).show();
 		}
 
         Message msg = new Message();
@@ -162,45 +166,46 @@ public class ProjectListActivity extends Activity {
         handler.sendMessage(msg);
 	}
 	
-	final Handler handler = new Handler() {
+    private void refreshProjects(List<Project> projects) {
+        List<Map<String, Object>> names = new ArrayList<Map<String, Object>>();
+        for(int i = 0; i < projects.size(); i++) {
+        	Project prj = projects.get(i);
+        	String desc = prj.getDescription();
+        	if(desc == null || desc.isEmpty()) {
+        		desc = prj.getProjectName();
+        	}
+        	
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("id", prj.getProjectId());
+            map.put("item_image_icon", R.drawable.ic_project);
+            map.put("item_text_name", prj.getProjectName());
+            map.put("item_text_desc", desc);
+            map.put("item_text_time", prj.getCreateTimeString());
+            names.add(map);
+        }
+
+        SimpleAdapter adapter = new SimpleAdapter(
+                ProjectListActivity.this,
+                names,
+                R.layout.layout_project_item,
+                new String[]{"item_image_icon","item_text_name","item_text_desc","item_text_time"},
+                new int[]{R.id.item_image_icon,R.id.item_text_name,R.id.item_text_desc,R.id.item_text_time}
+        );
+
+        ListView lsvProjects = (ListView)findViewById(R.id.project_list);
+        lsvProjects.setAdapter(adapter);
+    }
+	
+	@SuppressLint("HandlerLeak")
+	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch(msg.what) {
 			case WHAT_INIT_PROJECT_LIST:
-				RefreshProjectList(msg);
+				@SuppressWarnings("unchecked")
+				List<Project> projects = (List<Project>)msg.obj;
+				refreshProjects(projects);
 				break;
 			}
-		}
-		
-        private void RefreshProjectList(Message msg) {
-            @SuppressWarnings("unchecked")
-			List<Project> projects = (List<Project>)msg.obj;
-            List<Map<String, Object>> names = new ArrayList<Map<String, Object>>();
-            for(int i = 0; i < projects.size(); i++) {
-            	Project prj = projects.get(i);
-            	String desc = prj.getDescription();
-            	if(desc == null || desc.isEmpty()) {
-            		desc = prj.getProjectName();
-            	}
-            	
-                Map<String, Object> map = new HashMap<String, Object>();
-                map.put("id", prj.getProjectId());
-                map.put("img", R.drawable.ic_project);
-                map.put("txtName", prj.getProjectName());
-                map.put("txtDesc", desc);
-                map.put("txtCreateTime", prj.getCreateTime());
-                names.add(map);
-            }
-
-            SimpleAdapter adapter = new SimpleAdapter(
-                    ProjectListActivity.this,
-                    names,
-                    R.layout.layout_projectitem,
-                    new String[]{"img","txtName","txtDesc","txtCreateTime"},
-                    new int[]{R.id.img,R.id.txtName,R.id.txtDesc,R.id.txtCreateTime}
-            );
-
-            ListView lsvProjects = (ListView)findViewById(R.id.listProjects);
-            lsvProjects.setAdapter(adapter);
-        }
+		}		
     };
 }

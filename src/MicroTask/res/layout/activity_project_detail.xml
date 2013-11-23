@@ -9,7 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="10dp" >
 
         <TableLayout
             android:layout_width="fill_parent"
@@ -24,30 +24,30 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_weight="1"
                     android:layout_gravity="left"
-                    android:layout_column="1"
                     android:gravity="left|center_vertical"
-                    android:text="@string/label_task_id"
-                    android:textSize="12sp" />
+                    android:text="@string/project_detail_label_project_id"
+                    android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/task_id"
+                    android:id="@+id/project_detail_label_project_id"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
+                    android:layout_height="wrap_content"                    
                     android:layout_gravity="right"
-                    android:layout_weight="1"
+                    android:layout_column="1"
+                    android:layout_weight="3"
                     android:gravity="right|center_vertical"
                     android:paddingRight="2dp"
-                    android:text="hello"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" 
+                    android:text="@string/project_detail_label_project_id"/>
 
                 <ImageView
                     android:layout_width="13dip"
                     android:layout_height="13dip"
-                    android:contentDescription="@string/image_view_disc"
-                    android:src="@drawable/right_arrow"
-                    android:visibility="invisible" />
+                    android:contentDescription="@string/content_description"
+                    android:src="@drawable/right_arrow" />
             </TableRow>
 
             <View
@@ -55,7 +55,7 @@
                 android:background="#303030" />
 
             <TableRow
-                android:id="@+id/tr_task_status"
+                android:id="@+id/tr_project_name"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
@@ -67,11 +67,11 @@
                     android:layout_column="0"
                     android:layout_gravity="left"
                     android:gravity="left|center_vertical"
-                    android:text="@string/label_task_status"
+                    android:text="@string/label_project_name"
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/task_status"
+                    android:id="@+id/project_name"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
@@ -79,7 +79,6 @@
                     android:layout_weight="1"
                     android:gravity="right|center_vertical"
                     android:paddingRight="2dp"
-                    android:text="Following up"
                     android:textSize="12sp" />
 
                 <ImageView
@@ -94,7 +93,7 @@
                 android:background="#303030" />
 
             <TableRow
-                android:id="@+id/tr_task_content"
+                android:id="@+id/tr_project_desc"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
@@ -106,7 +105,7 @@
                     android:layout_column="0"
                     android:layout_gravity="left"
                     android:gravity="left|center_vertical"
-                    android:text="@string/label_task_content"
+                    android:text="@string/label_project_desc"
                     android:textSize="12sp" />
 
                 <TextView
@@ -119,7 +118,7 @@
                     android:gravity="right|center_vertical"
                     android:paddingRight="2dp"
                     android:textSize="12sp" 
-                    android:text="AAAAAAAAAAAAAAAAAAAAAAAA"/>
+                    android:text="asdfasdfasdfsdfasdfasdfasdfasdfasdf"/>
 
                 <ImageView
                     android:layout_width="13dip"
@@ -154,7 +153,7 @@
                     android:layout_column="0"
                     android:layout_gravity="left"
                     android:gravity="left|center_vertical"
-                    android:text="@string/label_assigned_to"
+                    android:text="@string/label_project_user"
                     android:textSize="12sp" />
 
                 <TextView
@@ -166,7 +165,6 @@
                     android:layout_weight="1"
                     android:gravity="right|center_vertical"
                     android:paddingRight="2dp"
-                    android:text="Patrick"
                     android:textSize="12sp" />
 
                 <ImageView
@@ -191,7 +189,7 @@
                     android:layout_column="0"
                     android:layout_gravity="left"
                     android:gravity="left|center_vertical"
-                    android:text="@string/label_title"
+                    android:text="@string/label_project_time"
                     android:textSize="12sp" />
 
                 <TextView
@@ -203,7 +201,6 @@
                     android:layout_weight="1"
                     android:gravity="right|center_vertical"
                     android:paddingRight="2dp"
-                    android:text="Software engineer"
                     android:textSize="12sp" />
 
                 <ImageView
@@ -212,131 +209,6 @@
                     android:contentDescription="@string/image_view_disc"
                     android:src="@drawable/right_arrow"
                     android:visibility="invisible" />
-            </TableRow>
-        </TableLayout>
-
-        <TextView
-            android:id="@+id/blank2"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical" />
-
-        <TableLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_corner" >
-
-            <TableRow
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dip" >
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_gravity="left"
-                    android:gravity="left|center_vertical"
-                    android:text="@string/label_create_time"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/create_time"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:gravity="right|center_vertical"
-                    android:paddingRight="2dp"
-                    android:text="2013-10-12"
-                    android:textSize="12sp" />
-
-                <ImageView
-                    android:layout_width="13dip"
-                    android:layout_height="13dip"
-                    android:contentDescription="@string/image_view_disc"
-                    android:src="@drawable/right_arrow"
-                    android:visibility="invisible" />
-            </TableRow>
-
-            <View
-                android:layout_height="0.5dip"
-                android:background="#303030" />
-
-            <TableRow
-                android:id="@+id/tr_priority"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:padding="10dip" >
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_gravity="left"
-                    android:gravity="left|center_vertical"
-                    android:text="@string/label_priority"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/priority"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:gravity="right|center_vertical"
-                    android:paddingRight="2dp"
-                    android:text="2"
-                    android:textSize="12sp" />
-
-                <ImageView
-                    android:layout_width="13dip"
-                    android:layout_height="13dip"
-                    android:contentDescription="@string/image_view_disc"
-                    android:src="@drawable/right_arrow" />
-            </TableRow>
-
-            <View
-                android:layout_height="0.5dip"
-                android:background="#303030" />
-
-            <TableRow
-                android:id="@+id/tr_expected_complete_date"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:padding="10dip" >
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0"
-                    android:layout_gravity="left"
-                    android:gravity="left|center_vertical"
-                    android:text="@string/label_expected_complete_date"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/expected_complete_date"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1"
-                    android:layout_gravity="right"
-                    android:layout_weight="1"
-                    android:gravity="right|center_vertical"
-                    android:paddingRight="2dp"
-                    android:text="2013-11-12"
-                    android:textSize="12sp" />
-
-                <ImageView
-                    android:layout_width="13dip"
-                    android:layout_height="13dip"
-                    android:contentDescription="@string/image_view_disc"
-                    android:src="@drawable/right_arrow" />
             </TableRow>
         </TableLayout>
     </LinearLayout>

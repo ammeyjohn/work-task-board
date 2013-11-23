@@ -4,6 +4,7 @@ import com.fatboy.microtask.models.Project;
 import com.fatboy.microtask.visitors.ProjectVisitor;
 
 import android.os.Bundle;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
@@ -13,15 +14,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class NewProjectActivity extends Activity {
+public class ProjectDetailActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_new_project);
+		setContentView(R.layout.activity_project_detail);
 		
-		Button btnCreate = (Button)findViewById(R.id.btnCreateProject);
-		btnCreate.setOnClickListener(new ButtonListener());
+		// Initialize the action bar.
+		ActionBar actionBar = this.getActionBar();
+		actionBar.setCustomView(R.layout.detail_titlebar);
+		actionBar.setDisplayShowCustomEnabled(true);
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.show();
+		
+//		Button btnCreate = (Button)findViewById(R.id.btnCreateProject);
+//		btnCreate.setOnClickListener(new ButtonListener());
 	}
 
 	@Override
@@ -39,9 +47,9 @@ public class NewProjectActivity extends Activity {
 				int id = visitor.addProject(project);
 				
                 Intent intent = new Intent();     
-                intent.setClass(NewProjectActivity.this, ProjectListActivity.class);
+                intent.setClass(ProjectDetailActivity.this, ProjectListActivity.class);
                 startActivity(intent);  
-                NewProjectActivity.this.finish();
+                ProjectDetailActivity.this.finish();
 			}
 		}).start();
 	}
@@ -51,15 +59,15 @@ public class NewProjectActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			EditText txtName = (EditText)findViewById(R.id.txtProjectName);
-			EditText txtDesc = (EditText)findViewById(R.id.txtProjectDesc);
-			
-			// Create project object.
-			Project project = new Project();
-			project.setProjectName(txtName.getText().toString());
-			project.setDescription(txtDesc.getText().toString());
-		
-			createProject(project);
+//			EditText txtName = (EditText)findViewById(R.id.txtProjectName);
+//			EditText txtDesc = (EditText)findViewById(R.id.txtProjectDesc);
+//			
+//			// Create project object.
+//			Project project = new Project();
+//			project.setProjectName(txtName.getText().toString());
+//			project.setDescription(txtDesc.getText().toString());
+//		
+//			createProject(project);
 		}
 		
 	}

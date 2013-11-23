@@ -30,8 +30,8 @@
             </intent-filter>`
         </activity>
         <activity
-            android:name="com.fatboy.microtask.NewProjectActivity"
-            android:label="@string/title_activity_new_project" >
+            android:name="com.fatboy.microtask.ProjectDetailActivity"
+            android:label="@string/title_activity_project_detail" >
         </activity>
         <activity
             android:name="com.fatboy.microtask.LoginActivity"

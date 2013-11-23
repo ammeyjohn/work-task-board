@@ -7,6 +7,7 @@ import java.util.List;
 import com.fatboy.microtask.models.ApiResponse;
 import com.fatboy.microtask.models.Project;
 import com.fatboy.microtask.utils.Network;
+import com.fatboy.microtask.utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -20,7 +21,7 @@ public class ProjectVisitor {
 		String url = Network.BASE_URL + ACTION_PROJECT_LIST;
 		String html = Network.Requst(url);
 
-        Gson gson = new Gson();
+        Gson gson = Utils.createGson(); 
         Type type = new TypeToken<ApiResponse<List<Project>>>(){}.getType();
         ApiResponse<List<Project>> api = gson.fromJson(html, type);
         
@@ -43,7 +44,7 @@ public class ProjectVisitor {
 				
 		String html = Network.Requst(url);
 		
-        Gson gson = new Gson();
+        Gson gson = Utils.createGson(); 
         Type type = new TypeToken<ApiResponse<Integer>>(){}.getType();
         ApiResponse<Integer> api = gson.fromJson(html, type);
         
@@ -59,7 +60,7 @@ public class ProjectVisitor {
 		
 		String html = Network.Requst(url);
 		
-        Gson gson = new Gson();
+        Gson gson = Utils.createGson(); 
         Type type = new TypeToken<ApiResponse<Integer>>(){}.getType();
         ApiResponse<Integer> api = gson.fromJson(html, type);
         

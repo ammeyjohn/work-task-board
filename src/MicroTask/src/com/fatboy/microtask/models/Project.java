@@ -1,12 +1,17 @@
 package com.fatboy.microtask.models;
 
 import java.io.Serializable;
+import java.util.Date;
 
+import com.fatboy.microtask.utils.Utils;
 import com.google.gson.annotations.SerializedName;
 
-public class Project implements Serializable {
+public class Project 
+	implements Serializable {
 	
-    @SerializedName("id")
+	private static final long serialVersionUID = 1L;
+
+	@SerializedName("id")
     private int projectId;
 
     @SerializedName("name")
@@ -22,7 +27,7 @@ public class Project implements Serializable {
     private int userId;
 
     @SerializedName("create_time")
-    private String createTime;
+    private Date createTime;
 
 	public int getProjectId() {
 		return projectId;
@@ -64,11 +69,15 @@ public class Project implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
+	
+	public String getCreateTimeString() {
+		return Utils.getDateString(createTime);
+	}
 
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 
