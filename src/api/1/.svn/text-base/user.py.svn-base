@@ -87,7 +87,7 @@ def add_user(dic):
 								   group_name,
 								   status, 
 								   create_time)
-				VALUES(%s, %s, %s, %s, curdate())'''
+				VALUES(%s, %s, %s, %s, now())'''
 
 	sql_param = (name, password, group, __DEFALUT_USER_STATUS) 
 

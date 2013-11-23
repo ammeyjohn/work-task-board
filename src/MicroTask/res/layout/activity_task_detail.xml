@@ -1,0 +1,344 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#c0c0c0"
+    tools:context=".TaskDetailActivity" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape" >
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dip" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/lable_task_id"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/task_id"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="2dp"
+                    android:text="hello"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="13dip"
+                    android:layout_height="13dip"
+                    android:contentDescription="@string/image_view_disc"
+                    android:src="@drawable/right_arrow"
+                    android:visibility="invisible" />
+            </TableRow>
+
+            <View
+                android:layout_height="0.5dip"
+                android:background="#303030" />
+
+            <TableRow
+                android:id="@+id/tr_task_status"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="10dip" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/lable_task_status"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/task_status"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="2dp"
+                    android:text="Following up"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="13dip"
+                    android:layout_height="13dip"
+                    android:contentDescription="@string/image_view_disc"
+                    android:src="@drawable/right_arrow" />
+            </TableRow>
+
+            <View
+                android:layout_height="0.5dip"
+                android:background="#303030" />
+
+            <TableRow
+                android:id="@+id/tr_task_content"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="10dip" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/lable_task_content"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/task_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="2dp"
+                    android:textSize="12sp" 
+                    android:text="AAAAAAAAAAAAAAAAAAAAAAAA"/>
+
+                <ImageView
+                    android:layout_width="13dip"
+                    android:layout_height="13dip"
+                    android:contentDescription="@string/image_view_disc"
+                    android:src="@drawable/right_arrow" />
+            </TableRow>
+        </TableLayout>
+
+        <TextView
+            android:id="@+id/blank1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical" />
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape" >
+
+            <TableRow
+                android:id="@+id/tr_assigned_to"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="10dip" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/lable_assigned_to"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/assigned_to"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="2dp"
+                    android:text="Patrick"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="13dip"
+                    android:layout_height="13dip"
+                    android:contentDescription="@string/image_view_disc"
+                    android:src="@drawable/right_arrow" />
+            </TableRow>
+
+            <View
+                android:layout_height="0.5dip"
+                android:background="#303030" />
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dip" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/lable_title"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="2dp"
+                    android:text="Software engineer"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="13dip"
+                    android:layout_height="13dip"
+                    android:contentDescription="@string/image_view_disc"
+                    android:src="@drawable/right_arrow"
+                    android:visibility="invisible" />
+            </TableRow>
+        </TableLayout>
+
+        <TextView
+            android:id="@+id/blank2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical" />
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape" >
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dip" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/lable_create_time"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/create_time"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="2dp"
+                    android:text="2013-10-12"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="13dip"
+                    android:layout_height="13dip"
+                    android:contentDescription="@string/image_view_disc"
+                    android:src="@drawable/right_arrow"
+                    android:visibility="invisible" />
+            </TableRow>
+
+            <View
+                android:layout_height="0.5dip"
+                android:background="#303030" />
+
+            <TableRow
+                android:id="@+id/tr_priority"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="10dip" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/lable_priority"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/priority"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="2dp"
+                    android:text="2"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="13dip"
+                    android:layout_height="13dip"
+                    android:contentDescription="@string/image_view_disc"
+                    android:src="@drawable/right_arrow" />
+            </TableRow>
+
+            <View
+                android:layout_height="0.5dip"
+                android:background="#303030" />
+
+            <TableRow
+                android:id="@+id/tr_expected_complete_date"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:padding="10dip" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_gravity="left"
+                    android:gravity="left|center_vertical"
+                    android:text="@string/lable_expected_complete_date"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/expected_complete_date"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="2dp"
+                    android:text="2013-11-12"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="13dip"
+                    android:layout_height="13dip"
+                    android:contentDescription="@string/image_view_disc"
+                    android:src="@drawable/right_arrow" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+</RelativeLayout>

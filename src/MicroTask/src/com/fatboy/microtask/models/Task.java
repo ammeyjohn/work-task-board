@@ -1,6 +1,8 @@
 package com.fatboy.microtask.models;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -25,10 +27,10 @@ public class Task implements Serializable {
     private int userId;
 
     @SerializedName("create_time")
-    private String createTime;
+    private Date createTime;
 
     @SerializedName("update_time")
-    private String updateTime;
+    private Date updateTime;
 
 	public int getTaskId() {
 		return taskId;
@@ -78,19 +80,24 @@ public class Task implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 
-	public String getUpdateTime() {
+	public Date getUpdateTime() {
 		return updateTime;
 	}
 
-	public void setUpdateTime(String updateTime) {
+	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}	   
+	
+	public String getUpdateTimeString() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return format.format(updateTime);
+	}
 }

@@ -1,18 +1,15 @@
-<FrameLayout
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container">
+    android:layout_height="fill_parent">
 
     <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
         android:id="@+id/listProjects"
-        android:layout_gravity="center"
-        android:smoothScrollbar="true"
-        android:fadeScrollbars="true"
-        android:background="@android:color/background_dark"
-        android:textFilterEnabled="false"
-        android:fastScrollEnabled="true" />
-
-</FrameLayout>
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center"
+	    android:fadeScrollbars="true"
+	    android:fastScrollEnabled="true"
+	    android:smoothScrollbar="true"
+	    android:textFilterEnabled="true" />        
+</RelativeLayout>

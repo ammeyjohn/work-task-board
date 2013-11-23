@@ -22,20 +22,17 @@
             android:id="@+id/txtContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#cbcaca"
             android:textSize="20sp" />
   
         <TextView  
             android:id="@+id/txtStatus"  
             android:layout_width="wrap_content"  
             android:layout_height="wrap_content"  
-            android:textColor="#cbcaca"  
             android:textSize="14sp" />  
         <TextView  
             android:id="@+id/txtUpdateTime"  
             android:layout_width="wrap_content"  
             android:layout_height="wrap_content"  
-            android:textColor="#cbcaca"  
             android:textSize="12sp" />  
     </LinearLayout>  
     <CheckBox  

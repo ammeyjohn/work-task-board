@@ -14,19 +14,16 @@
             android:id="@+id/txtName"  
             android:layout_width="wrap_content"  
             android:layout_height="wrap_content"  
-            android:textColor="#cbcaca"  
             android:textSize="20sp" />  
         <TextView  
             android:id="@+id/txtDesc"  
             android:layout_width="wrap_content"  
             android:layout_height="wrap_content"  
-            android:textColor="#cbcaca"  
             android:textSize="14sp" />  
         <TextView  
             android:id="@+id/txtCreateTime"  
             android:layout_width="wrap_content"  
             android:layout_height="wrap_content"  
-            android:textColor="#cbcaca"  
             android:textSize="12sp" />  
     </LinearLayout>  
 

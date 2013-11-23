@@ -26,6 +26,7 @@ import com.google.gson.reflect.TypeToken;
 public class Network {
 	
 	public final static String BASE_URL = "http://worktaskboard.sinaapp.com";
+	//public final static String BASE_URL = "http://localhost:8080";
 	
 	public static String Requst(String url) {
 				

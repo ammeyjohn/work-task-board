@@ -25,6 +25,10 @@ def get_tasks(dic):
 
 	sql_param = []
 	if dic is not None:
+		if dic['id'] is not None:
+			sql_str += ' AND id IN (%s)'
+			sql_param.append(dic['id'])
+
 		if dic['t'] is not None:
 			sql_str += ' AND type IN (%s)'
 			sql_param.append(dic['t'])
@@ -87,7 +91,7 @@ def add_task(dic):
 								   user_id,	
 								   create_time, 
 								   update_time) 
-				VALUES(%s, %s, %s, %s, %s, curdate(), curdate())'''
+				VALUES(%s, %s, %s, %s, %s, now(), now())'''
 
 	t = dic['t']
 	if t is None: t = __DEFALUT_TASK_TYPE
@@ -128,7 +132,7 @@ def modify_task(dic):
 		is_update = True
 
 	if is_update:
-		sql_str = 'UPDATE tasks SET ' + sql_str[1:] + ' WHERE id=%s'
+		sql_str = 'UPDATE tasks SET update_time=now(), ' + sql_str[1:] + ' WHERE id=%s'
 		sql_param.append(id)
 	else: return func_return(False, ERR_013)
 
@@ -144,7 +148,7 @@ def del_task(dic):
 	if id is None:
 		return func_return(False, msg=ERR_104)
 
-	sql_str = '''UPDATE tasks SET status=%s, update_time=curdate() 
+	sql_str = '''UPDATE tasks SET status=%s, update_time=now() 
 			   WHERE id=%s'''
 	sql_param = (__TASK_DELETE_FLAG, id)
 	r = db.exec_command(sql_str, sql_param)

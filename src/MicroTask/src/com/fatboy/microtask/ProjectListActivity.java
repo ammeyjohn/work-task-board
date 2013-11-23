@@ -31,8 +31,6 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 public class ProjectListActivity extends Activity {
-
-	final private Activity Outer = this;
 	
 	final static int WHAT_INIT_PROJECT_LIST = 1;
 	
@@ -69,9 +67,6 @@ public class ProjectListActivity extends Activity {
                 intent.setClass(ProjectListActivity.this, TaskListActivity.class);
                 intent.putExtra("id", Integer.parseInt(map.get("id").toString()));
                 startActivity(intent);                
-		        
-		        // Debug
-		        Toast.makeText(Outer, map.get("txtName").toString(), Toast.LENGTH_SHORT).show();		        
 		    }
 		});
 	}
@@ -80,12 +75,13 @@ public class ProjectListActivity extends Activity {
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		ListView lsvProjects = (ListView)findViewById(R.id.listProjects);
+		@SuppressWarnings("unchecked")
 		final Map<String, Object> map = (Map<String, Object>)lsvProjects.getAdapter().getItem(info.position);
 		switch(item.getItemId()) {
 		case Menu.FIRST:
 			String name = map.get("txtName").toString();
 			// Show dialog to confirm deleting project.
-			AlertDialog.Builder builder = new Builder(Outer);
+			AlertDialog.Builder builder = new Builder(ProjectListActivity.this);
 			builder.setMessage("确认删除项目" + name + "吗？");
 			builder.setTitle("提示");
 			builder.setPositiveButton("确认", new OnClickListener() {
@@ -157,7 +153,7 @@ public class ProjectListActivity extends Activity {
 		ProjectVisitor v = new ProjectVisitor();
 		List<Project> projects = v.getProjects();
 		if(projects == null) {
-			Toast.makeText(Outer, "Failed to retrieve project list.", Toast.LENGTH_LONG).show();
+			Toast.makeText(ProjectListActivity.this, "Failed to retrieve project list.", Toast.LENGTH_LONG).show();
 		}
 
         Message msg = new Message();
@@ -196,7 +192,7 @@ public class ProjectListActivity extends Activity {
             }
 
             SimpleAdapter adapter = new SimpleAdapter(
-                    Outer,
+                    ProjectListActivity.this,
                     names,
                     R.layout.layout_projectitem,
                     new String[]{"img","txtName","txtDesc","txtCreateTime"},
@@ -205,8 +201,6 @@ public class ProjectListActivity extends Activity {
 
             ListView lsvProjects = (ListView)findViewById(R.id.listProjects);
             lsvProjects.setAdapter(adapter);
-            
-            Toast.makeText(Outer, "Project list has been refreshed.", Toast.LENGTH_LONG).show();
         }
     };
 }

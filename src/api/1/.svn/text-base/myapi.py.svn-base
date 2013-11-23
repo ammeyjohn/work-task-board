@@ -22,7 +22,7 @@ def index(uid=0, pid=0, s=None):
 @get('/')
 @get('/tasks/list')
 def list_tasks():
-	req_get_dic = api_get(request, ['t','s','uid','pid','cnt'])
+	req_get_dic = api_get(request, ['id','t','s','uid','pid','cnt'])
 	result = task.get_tasks(req_get_dic)
 	return api_return(ACTION_TASK_LIST, result)		
 

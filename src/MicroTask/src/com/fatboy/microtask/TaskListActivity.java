@@ -17,15 +17,16 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 public class TaskListActivity extends Activity {
 
-	final private Activity Outer = this;	
 	final static int WHAT_INIT_TASK_LIST = 1;
-	
+	final static int WHAT_INIT_TASK = 2;
 	private int ProjectId = 0;
 	
 	@Override
@@ -37,11 +38,21 @@ public class TaskListActivity extends Activity {
 		Intent intent = getIntent();
 		ProjectId = intent.getIntExtra("id", 0);
 		
-		// For debug to show the project id.
-		Toast.makeText(Outer, "ProjectId=" + ProjectId, Toast.LENGTH_SHORT).show();
-		
 		// Initialize the task list.
-		LoadTasks();
+		loadTasks();
+		
+		// Attach events to ListView
+		ListView lsvTasks = (ListView)findViewById(R.id.listTasks);
+		lsvTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {  
+		    @Override  
+		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {  
+		        @SuppressWarnings("unchecked")  		       
+		        HashMap<String,Object> map = (HashMap<String, Object>) parent.getItemAtPosition(position);  
+		        
+		        // Load clicked task.
+		        loadTask(Integer.parseInt(map.get("id").toString()));		        	    
+		    }
+		});
 	}
 
 	@Override
@@ -68,26 +79,48 @@ public class TaskListActivity extends Activity {
                 Toast.makeText(this, "详细", Toast.LENGTH_LONG).show();
                 break;
             case R.id.menu_refresh_tasklist:
-                LoadTasks();
+                loadTasks();
                 break;
         }
         return false;
     }
 	
-	private void LoadTasks() {
+	private void loadTasks() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				initinalActivity();
+				initializeActivity();
+			}
+		}).start();
+	}
+	
+	private void loadTask(final int taskId) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				initializeActivity(taskId);
 			}
 		}).start();
 	}
 
-	private void initinalActivity() {		
+	private void initializeActivity(int taskId) {		
+		TaskVisitor v = new TaskVisitor();
+		Task task = v.getTask(taskId);
+		if(task == null) {
+			Toast.makeText(this, "Failed to retrieve task.", Toast.LENGTH_LONG).show();
+		}
+
+        Message msg = new Message();
+        msg.what = WHAT_INIT_TASK;
+        msg.obj = task;
+        handler.sendMessage(msg);
+	}
+
+	private void initializeActivity() {		
 		TaskVisitor v = new TaskVisitor();
 		List<Task> tasks = v.getTasks(ProjectId);
 		if(tasks == null) {
-			Toast.makeText(Outer, "Failed to retrieve task list.", Toast.LENGTH_LONG).show();
+			Toast.makeText(TaskListActivity.this, "Failed to retrieve task list.", Toast.LENGTH_LONG).show();
 		}
 
         Message msg = new Message();
@@ -103,6 +136,14 @@ public class TaskListActivity extends Activity {
         	case WHAT_INIT_TASK_LIST:
         		RefreshTaskList(msg);
         		break;
+        	case WHAT_INIT_TASK:
+		        // Start task activity to show relative tasks.
+        		Task task = (Task)msg.obj;
+                Intent intent = new Intent();     
+                intent.setClass(TaskListActivity.this, TaskDetailActivity.class);
+                intent.putExtra("task", task);
+                startActivity(intent); 
+        		break;
         	}
         }
         
@@ -114,15 +155,16 @@ public class TaskListActivity extends Activity {
             	Task task = tasks.get(i);            	
             	
                 Map<String, Object> map = new HashMap<String, Object>();
+                map.put("id", task.getTaskId());
                 map.put("img", R.drawable.ic_task);
                 map.put("txtContent", task.getTaskContent());
                 map.put("txtStatus", task.getStatus());
-                map.put("txtUpdateTime", task.getUpdateTime());
+                map.put("txtUpdateTime", task.getUpdateTimeString());
                 contents.add(map);
             }
 
             SimpleAdapter adapter = new SimpleAdapter(
-                    Outer,
+                    TaskListActivity.this,
                     contents,
                     R.layout.layout_taskitem,
                     new String[]{"img","txtContent","txtStatus","txtUpdateTime"},
@@ -131,8 +173,6 @@ public class TaskListActivity extends Activity {
 
             ListView lsvTasks = (ListView)findViewById(R.id.listTasks);
             lsvTasks.setAdapter(adapter);
-            
-            Toast.makeText(Outer, "Task list has been refreshed.", Toast.LENGTH_LONG).show();
         }
     };
 }
