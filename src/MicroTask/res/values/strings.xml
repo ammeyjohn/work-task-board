@@ -28,13 +28,34 @@
     <string name="project_detail_label_project_user">创建用户</string>
     <string name="project_detail_label_project_time">创建日期</string>
     <string name="project_detail_dialog_title_project_name">项目名称</string>
-    <string name="project_detail_dialog_title_project_desc">项目名称</string>
+    <string name="project_detail_dialog_title_project_desc">项目说明</string>
     <string name="project_detail_dialog_ok_button">确认</string>
     <string name="project_detail_dialog_cancel_button">取消</string>
     <string name="project_detail_fail_to_save_project">无法保存更改</string>
 
+    <!-- TaskListActivity -->
+    <string name="context_menu_create_task">新建任务</string>
+    <string name="context_menu_delete_task">删除任务</string>
+    <string name="context_menu_refresh_task_list">刷新任务列表</string>
+    <string name="task_list_fail_to_retrieve_tasks">无法加载任务列表</string>
+
+    <!-- TaskDetailActivity -->
+    <string name="task_detail_label_task_id">任务编号</string>
+    <string name="task_detail_label_task_content">任务内容</string>
+    <string name="task_detail_label_task_status">任务状态</string>
+    <string name="task_detail_label_create_user">创建用户</string>
+    <string name="task_detail_label_assign_user">分派用户</string>
+    <string name="task_detail_label_create_time">创建日期</string>
+    <string name="task_detail_label_update_time">更新日期</string>
+    <string name="task_detail_label_task_priority">优先等级</string>
+    <string name="task_detail_label_expect_date">期望日期</string>
+    <string name="task_detail_fail_to_save_task">无法保存更改</string>
+    <string name="task_detail_dialog_title_task_status">任务状态</string>
+    <string name="task_detail_dialog_title_task_content">任务内容</string>
+    <string name="task_detail_dialog_ok_button">确认</string>
+    <string name="task_detail_dialog_cancel_button">取消</string>
+
     
-    <string name="action_settings">Settings</string>
     <string name="title_activity_project_list">项目列表</string>
     <string name="title_activity_project_detail">项目信息</string>
     <string name="title_activity_task_detail">任务信息</string>
@@ -47,11 +68,5 @@
     <string name="label_priority">优先级  </string>
     <string name="label_expected_complete_date">期望完成时间</string>
     <string name="image_view_disc">image_disc</string>
-    <string name="titlebar_text">详细信息</string>
-    <string name="label_project_id">项目编号</string>
-    <string name="label_project_name">项目名称</string>
-    <string name="label_project_desc">项目描述</string>
-    <string name="label_project_user">创建用户</string>
-    <string name="label_project_time">创建时间</string>
 
 </resources>

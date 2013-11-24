@@ -2,7 +2,7 @@
     android:layout_width="fill_parent" android:layout_height="75dp"  
     android:paddingLeft="10dp" android:paddingRight="10dp">  
     <ImageView  
-        android:id="@+id/item_image_icon"  
+        android:id="@+id/project_item_image_icon"  
         android:layout_height="fill_parent"  
         android:layout_width="60dp"  
         android:contentDescription="@string/content_description"
@@ -10,20 +10,20 @@
     <LinearLayout  
         android:orientation="vertical" android:layout_height="fill_parent"  
         android:layout_width="fill_parent" 
-        android:layout_toRightOf="@id/item_image_icon"  
+        android:layout_toRightOf="@id/project_item_image_icon"  
         android:paddingLeft="8dp">  
         <TextView  
-            android:id="@+id/item_text_name"  
+            android:id="@+id/project_item_text_name"  
             android:layout_width="wrap_content"  
             android:layout_height="wrap_content"  
             android:textSize="20sp" />  
         <TextView  
-            android:id="@+id/item_text_desc"  
+            android:id="@+id/project_item_text_desc"  
             android:layout_width="wrap_content"  
             android:layout_height="wrap_content"  
             android:textSize="14sp" />  
         <TextView  
-            android:id="@+id/item_text_time"  
+            android:id="@+id/project_item_text_time"  
             android:layout_width="wrap_content"  
             android:layout_height="wrap_content"  
             android:textSize="12sp" />  

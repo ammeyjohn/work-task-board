@@ -26,7 +26,6 @@ import android.widget.Toast;
 public class TaskListActivity extends Activity {
 
 	final static int WHAT_INIT_TASK_LIST = 1;
-	final static int WHAT_INIT_TASK = 2;
 	private int ProjectId = 0;
 	
 	@Override
@@ -42,15 +41,19 @@ public class TaskListActivity extends Activity {
 		loadTasks();
 		
 		// Attach events to ListView
-		ListView lsvTasks = (ListView)findViewById(R.id.listTasks);
+		ListView lsvTasks = (ListView)findViewById(R.id.task_list);
 		lsvTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {  
 		    @Override  
 		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {  
 		        @SuppressWarnings("unchecked")  		       
 		        HashMap<String,Object> map = (HashMap<String, Object>) parent.getItemAtPosition(position);  
 		        
-		        // Load clicked task.
-		        loadTask(Integer.parseInt(map.get("id").toString()));		        	    
+        		Task task = (Task)map.get("tag");
+                Intent intent = new Intent();     
+                intent.setClass(TaskListActivity.this, TaskDetailActivity.class);
+                intent.putExtra("tag", task);
+                intent.putExtra("projectId", ProjectId);
+                startActivity(intent);        		
 		    }
 		});
 	}
@@ -58,7 +61,7 @@ public class TaskListActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu_tasklist, menu);
+		inflater.inflate(R.menu.menu_task_list, menu);
 		return true;
 	}
 
@@ -66,19 +69,17 @@ public class TaskListActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.menu_new_task:
-                Toast.makeText(this, "新建", Toast.LENGTH_LONG).show();
+            case R.id.menu_create_task:
+            	Intent intent = new Intent();
+            	intent.putExtra("projectId", ProjectId);
+                intent.setClass(TaskListActivity.this, TaskDetailActivity.class);
+                startActivity(intent);
+                this.finish();
                 break;
-            case R.id.menu_del_task:
+            case R.id.menu_delete_task:
                 Toast.makeText(this, "删除", Toast.LENGTH_LONG).show();
                 break;
-            case R.id.menu_modify_task:
-                Toast.makeText(this, "修改", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.menu_detail_task:
-                Toast.makeText(this, "详细", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.menu_refresh_tasklist:
+            case R.id.menu_refresh_task_list:
                 loadTasks();
                 break;
         }
@@ -93,34 +94,13 @@ public class TaskListActivity extends Activity {
 			}
 		}).start();
 	}
-	
-	private void loadTask(final int taskId) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				initializeActivity(taskId);
-			}
-		}).start();
-	}
 
-	private void initializeActivity(int taskId) {		
-		TaskVisitor v = new TaskVisitor();
-		Task task = v.getTask(taskId);
-		if(task == null) {
-			Toast.makeText(this, "Failed to retrieve task.", Toast.LENGTH_LONG).show();
-		}
-
-        Message msg = new Message();
-        msg.what = WHAT_INIT_TASK;
-        msg.obj = task;
-        handler.sendMessage(msg);
-	}
-
-	private void initializeActivity() {		
+	private void initializeActivity() {
 		TaskVisitor v = new TaskVisitor();
 		List<Task> tasks = v.getTasks(ProjectId);
 		if(tasks == null) {
-			Toast.makeText(TaskListActivity.this, "Failed to retrieve task list.", Toast.LENGTH_LONG).show();
+			String errmsg = getString(R.string.task_list_fail_to_retrieve_tasks);
+			Toast.makeText(TaskListActivity.this, errmsg, Toast.LENGTH_LONG).show();
 		}
 
         Message msg = new Message();
@@ -128,51 +108,50 @@ public class TaskListActivity extends Activity {
         msg.obj = tasks;
         handler.sendMessage(msg);
 	}
-
     
+    private void refreshTaskList(Message msg) {
+        @SuppressWarnings("unchecked")
+		List<Task> tasks = (List<Task>)msg.obj;
+        List<Map<String, Object>> contents = new ArrayList<Map<String, Object>>();
+        for(int i = 0; i < tasks.size(); i++) {
+        	Task task = tasks.get(i);            	
+        	
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("id", task.getTaskId());
+            map.put("task_item_image_icon", R.drawable.ic_task);
+            map.put("task_item_text_content", task.getTaskContent());
+            map.put("task_item_text_status", task.getStatus());
+            map.put("task_item_text_update_time", task.getUpdateTimeString());
+            map.put("tag", task);
+            contents.add(map);
+        }
+
+        SimpleAdapter adapter = new SimpleAdapter(
+                this,
+                contents,
+                R.layout.layout_task_item,
+                new String[]{"task_item_image_icon",
+                			 "task_item_text_content",
+                			 "task_item_text_status",
+                			 "task_item_text_update_time"},
+                new int[]{R.id.task_item_image_icon,
+                		   R.id.task_item_text_content,
+                		   R.id.task_item_text_status,
+                		   R.id.task_item_text_update_time}
+        );
+
+        ListView lsvTasks = (ListView)findViewById(R.id.task_list);
+        lsvTasks.setAdapter(adapter);
+    }
+	
+	@SuppressLint("HandlerLeak")
 	final Handler handler = new Handler() {
         public void handleMessage(Message msg) {
         	switch(msg.what) {
         	case WHAT_INIT_TASK_LIST:
-        		RefreshTaskList(msg);
-        		break;
-        	case WHAT_INIT_TASK:
-		        // Start task activity to show relative tasks.
-        		Task task = (Task)msg.obj;
-                Intent intent = new Intent();     
-                intent.setClass(TaskListActivity.this, TaskDetailActivity.class);
-                intent.putExtra("task", task);
-                startActivity(intent); 
+        		refreshTaskList(msg);
         		break;
         	}
-        }
-        
-        private void RefreshTaskList(Message msg) {
-            @SuppressWarnings("unchecked")
-			List<Task> tasks = (List<Task>)msg.obj;
-            List<Map<String, Object>> contents = new ArrayList<Map<String, Object>>();
-            for(int i = 0; i < tasks.size(); i++) {
-            	Task task = tasks.get(i);            	
-            	
-                Map<String, Object> map = new HashMap<String, Object>();
-                map.put("id", task.getTaskId());
-                map.put("img", R.drawable.ic_task);
-                map.put("txtContent", task.getTaskContent());
-                map.put("txtStatus", task.getStatus());
-                map.put("txtUpdateTime", task.getUpdateTimeString());
-                contents.add(map);
-            }
-
-            SimpleAdapter adapter = new SimpleAdapter(
-                    TaskListActivity.this,
-                    contents,
-                    R.layout.layout_taskitem,
-                    new String[]{"img","txtContent","txtStatus","txtUpdateTime"},
-                    new int[]{R.id.img,R.id.txtContent,R.id.txtStatus,R.id.txtUpdateTime}
-            );
-
-            ListView lsvTasks = (ListView)findViewById(R.id.listTasks);
-            lsvTasks.setAdapter(adapter);
         }
     };
 }

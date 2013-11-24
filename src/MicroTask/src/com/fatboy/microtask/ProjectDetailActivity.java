@@ -43,6 +43,7 @@ public class ProjectDetailActivity extends Activity {
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.show();
 		
+		// Binding click event to button on title bar.
 		Button btn_save = (Button)findViewById(R.id.action_titlebar_save);
 		btn_save.setOnClickListener(new ButtonSaveListener());
 

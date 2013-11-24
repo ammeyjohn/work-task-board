@@ -181,10 +181,10 @@ public class ProjectListActivity extends Activity {
         	
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", prj.getProjectId());
-            map.put("item_image_icon", R.drawable.ic_project);
-            map.put("item_text_name", prj.getProjectName());
-            map.put("item_text_desc", desc);
-            map.put("item_text_time", prj.getCreateTimeString());
+            map.put("project_item_image_icon", R.drawable.ic_project);
+            map.put("project_item_text_name", prj.getProjectName());
+            map.put("project_item_text_desc", desc);
+            map.put("project_item_text_time", prj.getCreateTimeString());
             map.put("tag", prj);
             names.add(map);
         }
@@ -193,8 +193,14 @@ public class ProjectListActivity extends Activity {
                 ProjectListActivity.this,
                 names,
                 R.layout.layout_project_item,
-                new String[]{"item_image_icon","item_text_name","item_text_desc","item_text_time"},
-                new int[]{R.id.item_image_icon,R.id.item_text_name,R.id.item_text_desc,R.id.item_text_time}
+                new String[]{"project_item_image_icon",
+                		     "project_item_text_name",
+                		     "project_item_text_desc",
+                		     "project_item_text_time"},
+                new int[]{R.id.project_item_image_icon,
+                		   R.id.project_item_text_name,
+                		   R.id.project_item_text_desc,
+                		   R.id.project_item_text_time}
         );
 
         ListView lsvProjects = (ListView)findViewById(R.id.project_list);

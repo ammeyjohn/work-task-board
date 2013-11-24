@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
 public class ApiResponse<T>
 	implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	@SerializedName("result")
 	private Boolean result;
 	

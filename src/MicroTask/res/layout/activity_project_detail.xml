@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#c0c0c0"
-    tools:context=".TaskDetailActivity" >
+    tools:context=".ProjectListActivity" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -20,12 +20,12 @@
                 android:id="@+id/tr_project_detail_project_id"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:padding="10dp" >
 
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"                    
+                    android:layout_gravity="left"
                     android:layout_weight="1.0"
                     android:gravity="left|center_vertical"
                     android:text="@string/project_detail_label_project_id"
@@ -34,32 +34,32 @@
                 <TextView
                     android:id="@+id/project_detail_label_project_id"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"                    
+                    android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_weight="9.0"
                     android:gravity="right|center_vertical"
                     android:paddingRight="2dp"
-                    android:textSize="14sp" 
-                    android:text="@string/project_detail_label_project_id"/>
+                    android:text="@string/project_detail_label_project_id"
+                    android:textSize="14sp" />
 
                 <ImageView
                     android:layout_width="13dip"
                     android:layout_height="13dip"
                     android:contentDescription="@string/content_description"
-                    android:src="@drawable/right_arrow" 
+                    android:src="@drawable/right_arrow"
                     android:visibility="invisible" />
             </TableRow>
-            
+
             <View
-                android:layout_height="0.5dip" 
+                android:layout_height="0.5dip"
                 android:background="#303030" />
 
             <TableRow
                 android:id="@+id/tr_project_detail_project_name"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dip"
-                android:clickable="true">
+                android:clickable="true"
+                android:padding="10dip" >
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -85,12 +85,12 @@
                     android:layout_width="13dip"
                     android:layout_height="13dip"
                     android:contentDescription="@string/image_view_disc"
-                    android:src="@drawable/right_arrow" 
-                    android:visibility="invisible"/>
+                    android:src="@drawable/right_arrow"
+                    android:visibility="invisible" />
             </TableRow>
-            
-            <View 
-                android:layout_height="0.5dip" 
+
+            <View
+                android:layout_height="0.5dip"
                 android:background="#303030" />
 
             <TableRow
@@ -117,8 +117,8 @@
                     android:layout_weight="9.0"
                     android:gravity="right|center_vertical"
                     android:paddingRight="2dp"
-                    android:textSize="14sp" 
-                    android:text="@string/project_detail_label_project_desc" />
+                    android:text="@string/project_detail_label_project_desc"
+                    android:textSize="14sp" />
 
                 <ImageView
                     android:layout_width="13dip"
@@ -152,7 +152,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
-                    android:layout_weight ="1.0"
+                    android:layout_weight="1.0"
                     android:gravity="left|center_vertical"
                     android:text="@string/project_detail_label_project_user"
                     android:textSize="14sp" />
@@ -172,13 +172,13 @@
                     android:layout_width="13dip"
                     android:layout_height="13dip"
                     android:contentDescription="@string/image_view_disc"
-                    android:src="@drawable/right_arrow" 
-                    android:visibility="invisible"/>
+                    android:src="@drawable/right_arrow"
+                    android:visibility="invisible" />
             </TableRow>
-            
-            <View 
-                android:layout_height="0.5dip" 
-                android:background="#303030" />            
+
+            <View
+                android:layout_height="0.5dip"
+                android:background="#303030" />
 
             <TableRow
                 android:id="@+id/tr_project_detail_project_time"

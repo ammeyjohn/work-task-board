@@ -1,14 +1,16 @@
 package com.fatboy.microtask.models;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.fatboy.microtask.utils.Utils;
 import com.google.gson.annotations.SerializedName;
 
 public class Task implements Serializable {
 	
-    @SerializedName("id")
+	private static final long serialVersionUID = 1L;
+
+	@SerializedName("id")
     private int taskId;
 
     @SerializedName("content")
@@ -59,6 +61,17 @@ public class Task implements Serializable {
 	public int getStatus() {
 		return status;
 	}
+	
+	public String getStatusString() {
+		switch(status) {
+		case -1: return "已删除";
+		case 1: return "已创建";
+		case 2: return "已分配";
+		case 3: return "已完成";
+		case 4: return "已确认";
+		}
+		return Integer.toString(status);
+	}
 
 	public void setStatus(int status) {
 		this.status = status;
@@ -88,6 +101,10 @@ public class Task implements Serializable {
 		this.createTime = createTime;
 	}
 
+	public String getCreateTimeString() {
+		return Utils.getDateString(createTime);
+	}
+
 	public Date getUpdateTime() {
 		return updateTime;
 	}
@@ -97,7 +114,6 @@ public class Task implements Serializable {
 	}	   
 	
 	public String getUpdateTimeString() {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		return format.format(updateTime);
+		return Utils.getDateString(updateTime);
 	}
 }

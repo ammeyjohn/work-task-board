@@ -6,37 +6,38 @@
     android:paddingRight="10dp" >
   
     <ImageView  
-        android:id="@+id/img"  
+        android:id="@+id/task_item_image_icon"  
         android:layout_height="fill_parent"  
         android:layout_width="60dp"  
+        android:contentDescription="@string/content_description"
         android:layout_alignParentLeft="true" />  
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/img"
+        android:layout_toRightOf="@id/task_item_image_icon"
         android:orientation="vertical"
         android:paddingLeft="8dp" >
 
         <TextView
-            android:id="@+id/txtContent"
+            android:id="@+id/task_item_text_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp" />
   
         <TextView  
-            android:id="@+id/txtStatus"  
+            android:id="@+id/task_item_text_status"  
             android:layout_width="wrap_content"  
             android:layout_height="wrap_content"  
             android:textSize="14sp" />  
         <TextView  
-            android:id="@+id/txtUpdateTime"  
+            android:id="@+id/task_item_text_update_time"  
             android:layout_width="wrap_content"  
             android:layout_height="wrap_content"  
             android:textSize="12sp" />  
     </LinearLayout>  
     <CheckBox  
-        android:id="@+id/checked"  
+        android:id="@+id/task_item_check"  
         android:layout_height="fill_parent"  
         android:layout_width="wrap_content"  
         android:layout_alignParentRight="true"  
