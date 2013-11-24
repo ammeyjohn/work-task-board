@@ -47,7 +47,7 @@ def add_project(dic):
 									  user_id,
 									  description, 
 									  create_time) 
-				VALUES(%s, %s, %s, %s, curdate())'''
+				VALUES(%s, %s, %s, %s, now())'''
 	sql_param = (name, __DEFALUT_PROJECT_STATUS, uid, desc)
 
 	r = db.exec_command(sql_str, sql_param)
@@ -77,9 +77,9 @@ def modify_project(dic):
 		sql_param.append(dic['s'])
 		is_update = True
 
-	if dic['d'] is not None:
+	if dic['desc'] is not None:
 		sql_str += ',description=%s'
-		sql_param.append(dic['d'])
+		sql_param.append(dic['desc'])
 		is_update = True
 
 	if is_update:
@@ -99,7 +99,7 @@ def del_project(dic):
 	if id is None:
 		return func_return(False, msg=ERR_104)
 
-	sql_str = '''UPDATE projects SET status=%s WHERE id=%s'''
+	sql_str = '''UPDATE projects SET status=%s WHERE id=%s;'''
 	sql_param = (__PROJ_DELETE_FLAG, id)
 	r = db.exec_command(sql_str, sql_param)
 	if not r['ret_res']: return r

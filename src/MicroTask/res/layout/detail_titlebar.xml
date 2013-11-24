@@ -4,27 +4,27 @@
     android:layout_height="match_parent" >
     
     <Button
-        android:id="@+id/cancel_btn"
+        android:id="@+id/action_titlebar_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:background="#00000000"
-        android:text="@string/btn_back_detail_project" />
+        android:text="@string/action_titlebar_back" />
  
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="@string/titlebar_text" />
+        android:text="@string/action_titlebar_title" />
 
 	<Button
-	    android:id="@+id/save_btn"
+	    android:id="@+id/action_titlebar_save"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentRight="true"
 	    android:layout_centerInParent="true"
 	    android:background="#00000000"
-	    android:text="@string/btn_save_detail_project" />
+	    android:text="@string/action_titlebar_save" />
 
 </RelativeLayout>

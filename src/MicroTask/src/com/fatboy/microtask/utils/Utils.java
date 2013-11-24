@@ -23,4 +23,14 @@ public class Utils {
 		}
 		return _Formatter.format(time);
 	}
+	
+	public static String getNeglectString(int maxLength, String str) {
+		if(str == null || str.isEmpty())
+			return "";
+		if(str.length() >= maxLength) {
+			str = str.substring(0, maxLength-3);
+			str += "...";
+		}
+		return str;		
+	}
 }

@@ -16,6 +16,7 @@ public class ProjectVisitor {
 	public final static String ACTION_PROJECT_LIST = "/projects/list";
 	public final static String ACTION_PROJECT_ADD  = "/project/add";
 	public final static String ACTION_PROJECT_DEL  = "/project/del";
+	public final static String ACTION_PROJECT_MODIFY  = "/project/modify";
 	
 	public List<Project> getProjects() {
 		String url = Network.BASE_URL + ACTION_PROJECT_LIST;
@@ -32,6 +33,7 @@ public class ProjectVisitor {
         return null;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public int addProject(Project project) {
 		String url = Network.BASE_URL + ACTION_PROJECT_ADD + "?";
 		url += "n=" + URLEncoder.encode(project.getProjectName());
@@ -52,6 +54,28 @@ public class ProjectVisitor {
         	return api.getData();
         }
         return -1;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public Boolean modifyProject(Project project) {
+		String url = Network.BASE_URL + ACTION_PROJECT_MODIFY + "?";
+		url += "id=" + project.getProjectId();
+		url += "&n=" + URLEncoder.encode(project.getProjectName());
+		
+		String desc = project.getDescription();
+		if(desc != null && !desc.isEmpty()) {
+			url += "&desc=" + URLEncoder.encode(desc);
+		} else {
+			url += "&desc=";
+		}
+				
+		String html = Network.Requst(url);
+		
+        Gson gson = Utils.createGson(); 
+        Type type = new TypeToken<ApiResponse<Integer>>(){}.getType();
+        ApiResponse<Integer> api = gson.fromJson(html, type);
+        
+        return api.getResult();
 	}
 	
 	public Boolean delProject(int projectId) {

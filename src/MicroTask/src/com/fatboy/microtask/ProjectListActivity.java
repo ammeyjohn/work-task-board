@@ -80,8 +80,8 @@ public class ProjectListActivity extends Activity {
 		final Map<String, Object> map = (Map<String, Object>)lsvProjects.getAdapter().getItem(info.position);
 		switch(item.getItemId()) {
 		case Menu.FIRST:
-			String name = map.get("txtName").toString();
 			// Show dialog to confirm deleting project.
+			String name = map.get("item_text_name").toString();
 			AlertDialog.Builder builder = new Builder(ProjectListActivity.this);
 			builder.setMessage(String.format(getString(R.string.project_list_dialog_message), name));
 			builder.setTitle(getString(R.string.project_list_dialog_title));
@@ -95,9 +95,13 @@ public class ProjectListActivity extends Activity {
 					});
 			builder.setNegativeButton(getString(R.string.project_list_dialog_cancel_button), null);
 			builder.create().show();
-			
 			break;
-		case Menu.FIRST + 1:								
+		case Menu.FIRST + 1:							
+            Intent intent = new Intent();     
+            intent.setClass(ProjectListActivity.this, ProjectDetailActivity.class);
+            intent.putExtra("tag", (Project)map.get("tag"));
+            startActivity(intent);  
+            this.finish();			
 			break;
 		}
 
@@ -181,6 +185,7 @@ public class ProjectListActivity extends Activity {
             map.put("item_text_name", prj.getProjectName());
             map.put("item_text_desc", desc);
             map.put("item_text_time", prj.getCreateTimeString());
+            map.put("tag", prj);
             names.add(map);
         }
 

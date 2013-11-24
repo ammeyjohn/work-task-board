@@ -62,13 +62,14 @@ def add_project():
 
 @get('/project/modify')
 def modify_project():
-	req_get_dic = api_get(request, ['id','n','s','d'])
+	req_get_dic = api_get(request, ['id','n','s','desc'])
 	result = project.modify_project(req_get_dic)
 	return api_return(ACTION_PROJECT_MODIFY, result)
 
 @get('/project/del')
 def del_project():
 	req_get_dic = api_get(request, ['id'])
+	#result = task.del_task(req_get_dic);
 	result = project.del_project(req_get_dic)
 	return api_return(ACTION_PROJECT_DEL, result)
 

@@ -77,9 +77,9 @@ def modify_project(dic):
 		sql_param.append(dic['s'])
 		is_update = True
 
-	if dic['d'] is not None:
+	if dic['desc'] is not None:
 		sql_str += ',description=%s'
-		sql_param.append(dic['d'])
+		sql_param.append(dic['desc'])
 		is_update = True
 
 	if is_update:
