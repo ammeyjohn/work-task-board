@@ -169,7 +169,9 @@
                     android:layout_width="13dip"
                     android:layout_height="13dip"
                     android:contentDescription="@string/content_description"
-                    android:src="@drawable/right_arrow" />
+                    android:src="@drawable/right_arrow"
+                    android:visibility="invisible" />
+
             </TableRow>
 
             <View
@@ -291,7 +293,7 @@
                     android:layout_height="13dip"
                     android:contentDescription="@string/content_description"
                     android:src="@drawable/right_arrow"
-                    android:visibility="visible" />
+                    android:visibility="invisible" />
             </TableRow>
 
             <View

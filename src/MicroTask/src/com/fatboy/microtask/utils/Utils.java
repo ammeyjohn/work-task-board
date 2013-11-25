@@ -19,7 +19,7 @@ public class Utils {
 	@SuppressLint("SimpleDateFormat")
 	public static String getDateString(Date time) {
 		if(_Formatter == null) {
-			_Formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			_Formatter = new SimpleDateFormat("yyyy-MM-dd");
 		}
 		return _Formatter.format(time);
 	}

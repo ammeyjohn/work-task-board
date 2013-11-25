@@ -71,8 +71,8 @@ public class TaskListActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.menu_create_task:
             	Intent intent = new Intent();
-            	intent.putExtra("projectId", ProjectId);
                 intent.setClass(TaskListActivity.this, TaskDetailActivity.class);
+            	intent.putExtra("projectId", ProjectId);
                 startActivity(intent);
                 this.finish();
                 break;
@@ -96,8 +96,8 @@ public class TaskListActivity extends Activity {
 	}
 
 	private void initializeActivity() {
-		TaskVisitor v = new TaskVisitor();
-		List<Task> tasks = v.getTasks(ProjectId);
+		TaskVisitor tv = new TaskVisitor();
+		List<Task> tasks = tv.getTasks(ProjectId);
 		if(tasks == null) {
 			String errmsg = getString(R.string.task_list_fail_to_retrieve_tasks);
 			Toast.makeText(TaskListActivity.this, errmsg, Toast.LENGTH_LONG).show();
@@ -120,7 +120,7 @@ public class TaskListActivity extends Activity {
             map.put("id", task.getTaskId());
             map.put("task_item_image_icon", R.drawable.ic_task);
             map.put("task_item_text_content", task.getTaskContent());
-            map.put("task_item_text_status", task.getStatus());
+            map.put("task_item_text_status", task.getStatusString());
             map.put("task_item_text_update_time", task.getUpdateTimeString());
             map.put("tag", task);
             contents.add(map);
