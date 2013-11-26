@@ -1,6 +1,7 @@
 package com.fatboy.microtask.visitors;
 
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.util.List;
 
 import com.fatboy.microtask.models.ApiResponse;
@@ -8,13 +9,14 @@ import com.fatboy.microtask.models.Task;
 import com.fatboy.microtask.utils.Network;
 import com.fatboy.microtask.utils.Utils;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class TaskVisitor {
 	
 	public final static String ACTION_TASK_LIST = "/tasks/list";
 	public final static String ACTION_TASK_ADD  = "/task/add";
+	public final static String ACTION_TASK_MODIFY  = "/task/modify";
+	public final static String ACTION_TASK_DEL  = "/task/del";
 	
 	public List<Task> getTasks() {
 		
@@ -71,11 +73,51 @@ public class TaskVisitor {
         return null;
 	}
 	
-/*	public Boolean createTask(Task task) {
+	@SuppressWarnings("deprecation")
+	public int createTask(Task task) {
 		
 		String url = Network.BASE_URL + ACTION_TASK_ADD;
 		if (task != null) {
-			url += 
+			url += "?c=" + URLEncoder.encode(task.getTaskContent());
+			url += "&uid=" + task.getUserId();
+			url += "&pid=" + task.getProjectId();
+			url += "&exp=" + Utils.getDateString(task.getExpectDate());
+			url += "&priority=" + task.getPriority();
+			url += "&ass=" + task.getAssignUser();			
 		}
-	}*/
+		
+		String html = Network.Requst(url);
+
+        Gson gson = Utils.createGson();
+        Type type = new TypeToken<ApiResponse<Integer>>(){}.getType();
+        ApiResponse<Integer> api = gson.fromJson(html, type);
+        
+        if(api.getResult()) {
+        	return api.getData();
+        }
+        return -1;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public Boolean modifyTask(Task task) {
+		
+		String url = Network.BASE_URL + ACTION_TASK_MODIFY;
+		if (task != null) {
+			url += "?id=" + task.getTaskId();
+			url += "&c=" + URLEncoder.encode(task.getTaskContent());
+			url += "&uid=" + task.getUserId();
+			url += "&pid=" + task.getProjectId();
+			url += "&exp=" + Utils.getDateString(task.getExpectDate());
+			url += "&priority=" + task.getPriority();
+			url += "&ass=" + task.getAssignUser();			
+		}
+		
+		String html = Network.Requst(url);
+
+        Gson gson = Utils.createGson();
+        Type type = new TypeToken<ApiResponse<Integer>>(){}.getType();
+        ApiResponse<Integer> api = gson.fromJson(html, type);
+        
+        return api.getResult();
+	}
 }

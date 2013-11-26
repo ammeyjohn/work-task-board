@@ -6,6 +6,7 @@
     tools:context=".TaskListActivity" >
 
     <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -171,7 +172,6 @@
                     android:contentDescription="@string/content_description"
                     android:src="@drawable/right_arrow"
                     android:visibility="invisible" />
-
             </TableRow>
 
             <View

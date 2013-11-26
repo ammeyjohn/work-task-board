@@ -33,6 +33,15 @@ public class Task implements Serializable {
 
     @SerializedName("update_time")
     private Date updateTime;
+    
+    @SerializedName("expect_date")
+    private Date expectDate;
+
+    @SerializedName("assign_user")
+    private int assignUser;
+
+    @SerializedName("priority")
+    private int priority;
 
 	public int getTaskId() {
 		return taskId;
@@ -115,5 +124,29 @@ public class Task implements Serializable {
 	
 	public String getUpdateTimeString() {
 		return Utils.getDateString(updateTime);
+	}
+
+	public Date getExpectDate() {
+		return expectDate;
+	}
+
+	public void setExpectDate(Date expectDate) {
+		this.expectDate = expectDate;
+	}
+
+	public int getAssignUser() {
+		return assignUser;
+	}
+
+	public void setAssignUser(int assignUser) {
+		this.assignUser = assignUser;
+	}
+
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 }

@@ -28,13 +28,13 @@ def list_tasks():
 
 @get('/task/add')
 def add_task():
-	req_get_dic = api_get(request, ['c','t','uid','pid'])
+	req_get_dic = api_get(request, ['c','t','uid','pid','exp','priority','ass'])
 	result = task.add_task(req_get_dic)
 	return api_return(ACTION_TASK_ADD, result)
 
 @get('/task/modify')
 def modify_task():
-	req_get_dic = api_get(request, ['id','c','t','s'])
+	req_get_dic = api_get(request, ['id','c','t','s','exp','priority','ass'])
 	result = task.modify_task(req_get_dic)
 	return api_return(ACTION_TASK_MODIFY, result)
 
@@ -69,7 +69,6 @@ def modify_project():
 @get('/project/del')
 def del_project():
 	req_get_dic = api_get(request, ['id'])
-	#result = task.del_task(req_get_dic);
 	result = project.del_project(req_get_dic)
 	return api_return(ACTION_PROJECT_DEL, result)
 

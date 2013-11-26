@@ -7,6 +7,7 @@ import java.util.List;
 import com.fatboy.microtask.models.Task;
 import com.fatboy.microtask.models.User;
 import com.fatboy.microtask.utils.Utils;
+import com.fatboy.microtask.visitors.TaskVisitor;
 import com.fatboy.microtask.visitors.UserVisitor;
 
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +32,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
             
 public class TaskDetailActivity extends Activity {
 
@@ -37,6 +40,7 @@ public class TaskDetailActivity extends Activity {
 	final static int DATE_DIALOG_ID = 1;
 	private Task _Task = null;
 	private int _ProjectId = -1;
+	private int _UserId = 1;
 	private Boolean _InUpdateMode = false;
 	private List<User> _Users = null;
 	
@@ -55,7 +59,8 @@ public class TaskDetailActivity extends Activity {
 		// Get relative task id.
 		Intent intent = getIntent();
 		_Task = (Task)intent.getSerializableExtra("tag");
-		_ProjectId = intent.getIntExtra("id", _ProjectId);
+		_ProjectId = intent.getIntExtra("projectId", _ProjectId);
+		_UserId = intent.getIntExtra("userId", _UserId);
 		_InUpdateMode = (_Task != null);
 		
 		// Binding click event to button on title bar.
@@ -64,14 +69,12 @@ public class TaskDetailActivity extends Activity {
 
 		Button btn_back = (Button)findViewById(R.id.action_titlebar_back);
 		btn_back.setOnClickListener(new ButtonBackListener());
-
-		// To initialize activity by given task.
-		initializeActivity();
 		
 		// Binding click event to table rows.
 		bindingStatusRowClickEvent();
 		bindingContentRowClickEvent();
 		bindingExpectDateRowClickEvent();
+		bindingPriorityRowClickEvent();
 		
 		// Do user loading.
 		loadUsers();
@@ -205,6 +208,7 @@ public class TaskDetailActivity extends Activity {
 	private void bindingExpectDateRowClickEvent() {
 		TableRow row = (TableRow)findViewById(R.id.tr_task_detail_expect_date);
 		row.setOnClickListener(new OnClickListener(){
+			@SuppressWarnings("deprecation")
 			@Override
 			public void onClick(View v) {
 	        	Date expectDate = null;
@@ -216,6 +220,35 @@ public class TaskDetailActivity extends Activity {
 	        	lblExpectDate.setTag(expectDate);
 				TaskDetailActivity.this.showDialog(DATE_DIALOG_ID);	
 			}
+		});
+	}
+	
+	private void bindingPriorityRowClickEvent() {
+		TableRow row = (TableRow)findViewById(R.id.tr_task_detail_task_priority);
+		row.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				TaskDetailActivity that = TaskDetailActivity.this;
+				final TextView lblPriority = (TextView)that.findViewById(R.id.task_detail_label_task_priority);
+				final EditText txtPriority = new EditText(TaskDetailActivity.this);
+				txtPriority.setText(txtPriority.getText());
+				txtPriority.setInputType(InputType.TYPE_CLASS_NUMBER);
+				
+				AlertDialog.Builder builder = new Builder(TaskDetailActivity.this);
+				builder.setTitle(getString(R.string.task_detail_dialog_title_task_priority));
+				builder.setView(txtPriority);
+				builder.setPositiveButton(getString(R.string.task_detail_dialog_ok_button), 
+						new android.content.DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								lblPriority.setText(txtPriority.getText());
+							}
+						});
+				builder.setNegativeButton(getString(R.string.task_detail_dialog_cancel_button), null);
+				builder.create().show();	
+			}
+			
 		});
 	}
 	
@@ -234,8 +267,7 @@ public class TaskDetailActivity extends Activity {
         }  
     };  
     
-    @SuppressWarnings("deprecation")
-	@Override  
+    @Override  
     protected Dialog onCreateDialog(int id) {  
        switch (id) {  
         case DATE_DIALOG_ID:  
@@ -258,6 +290,9 @@ public class TaskDetailActivity extends Activity {
 				// Refresh create user or assign user.
 				refreshUsers();
 
+				// To initialize activity by given task.
+				initializeActivity();
+				
 				TaskDetailActivity that = TaskDetailActivity.this;
 				TableRow rowAssignUser = (TableRow)findViewById(R.id.tr_task_detail_assign_user);
 				TextView lblAssignUser = (TextView)that.findViewById(R.id.task_detail_label_assign_user);
@@ -283,11 +318,60 @@ public class TaskDetailActivity extends Activity {
 
 	class ButtonSaveListener implements OnClickListener {
 
+		@SuppressLint("SimpleDateFormat")
 		@Override
 		public void onClick(View arg0) {
-
+			
+    		int status = Integer.parseInt(((TextView)findViewById(R.id.task_detail_label_task_status)).getTag().toString());
+    		int priority = Integer.parseInt(((TextView)findViewById(R.id.task_detail_label_task_priority)).getText().toString());
+    		Date expect_date =(Date)((TextView)findViewById(R.id.task_detail_label_except_date)).getTag();
+    		String content = ((TextView)findViewById(R.id.task_detail_label_task_content)).getTag().toString();
+    		
+    		User assign_user = (User)((TextView)findViewById(R.id.task_detail_label_assign_user)).getTag();
+    		int assign_user_id = assign_user.getUserId();
+			
+			if(_Task == null) {
+				_Task = new Task();
+			}
+			_Task.setStatus(status);
+			_Task.setAssignUser(assign_user_id);
+			_Task.setPriority(priority);
+			_Task.setTaskContent(content);
+			_Task.setExpectDate(expect_date);
+			_Task.setProjectId(_ProjectId);
+			_Task.setUserId(_UserId);
+			
+			createTask(_Task);
 		}
 		
+	}
+	
+	private void createTask(final Task task) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Boolean result = true;
+
+				TaskVisitor v = new TaskVisitor();
+				if (_InUpdateMode) {
+					result = v.modifyTask(task);
+				} else {
+					result = (v.createTask(task) > 0);
+				}
+
+				if(!result) {
+					String errmsg = getString(R.string.task_detail_fail_to_save_task);
+					Toast.makeText(TaskDetailActivity.this, errmsg, Toast.LENGTH_SHORT).show();
+				}
+				
+                Intent intent = new Intent();     
+                intent.setClass(TaskDetailActivity.this, TaskListActivity.class);
+                intent.putExtra("id", _ProjectId);
+                intent.putExtra("userId", _UserId);
+                startActivity(intent);  
+                TaskDetailActivity.this.finish();
+			}
+		}).start();
 	}
     
 	class SingleChoiceClick implements DialogInterface.OnClickListener {
@@ -302,14 +386,26 @@ public class TaskDetailActivity extends Activity {
     private void initializeActivity() {
     	if(!_InUpdateMode) {
     		((TextView)findViewById(R.id.task_detail_label_task_id)).setText("");
-    		((TextView)findViewById(R.id.task_detail_label_task_status)).setText("");
+    		((TextView)findViewById(R.id.task_detail_label_task_status)).setText("待创建");
+    		((TextView)findViewById(R.id.task_detail_label_task_status)).setTag(1);
     		((TextView)findViewById(R.id.task_detail_label_task_content)).setText("");
-    		((TextView)findViewById(R.id.task_detail_label_create_user)).setText("");
-    		((TextView)findViewById(R.id.task_detail_label_assign_user)).setText("");
-    		((TextView)findViewById(R.id.task_detail_label_create_time)).setText("");
-    		((TextView)findViewById(R.id.task_detail_label_update_time)).setText("");
-    		((TextView)findViewById(R.id.task_detail_label_task_priority)).setText("");
-    		((TextView)findViewById(R.id.task_detail_label_except_date)).setText("");
+    		
+    		User user = findUserById(_UserId);
+    		if(user != null) {
+    			((TextView)findViewById(R.id.task_detail_label_create_user)).setText(user.getUserName());
+    			((TextView)findViewById(R.id.task_detail_label_create_user)).setTag(user);
+    			((TextView)findViewById(R.id.task_detail_label_assign_user)).setText(user.getUserName());
+    			((TextView)findViewById(R.id.task_detail_label_assign_user)).setTag(user);
+    		}
+    		
+    		Date now = new Date();
+    		((TextView)findViewById(R.id.task_detail_label_create_time)).setText(Utils.getDateString(now));
+    		((TextView)findViewById(R.id.task_detail_label_create_time)).setTag(now);
+    		((TextView)findViewById(R.id.task_detail_label_update_time)).setText(Utils.getDateString(now));
+    		((TextView)findViewById(R.id.task_detail_label_update_time)).setTag(now);
+    		((TextView)findViewById(R.id.task_detail_label_except_date)).setText(Utils.getDateString(now));
+    		((TextView)findViewById(R.id.task_detail_label_except_date)).setTag(now);
+    		((TextView)findViewById(R.id.task_detail_label_task_priority)).setText("1");
     		
     	} else {
     		((TextView)findViewById(R.id.task_detail_label_task_id)).setText(Integer.toString(_Task.getTaskId()));
@@ -334,7 +430,13 @@ public class TaskDetailActivity extends Activity {
     		User createUser = findUserById(_Task.getUserId());
     		if(createUser != null) {
     			((TextView)findViewById(R.id.task_detail_label_create_user)).setText(createUser.getUserName());
-    			((TextView)findViewById(R.id.task_detail_label_assign_user)).setText(createUser.getUserName());
+    			((TextView)findViewById(R.id.task_detail_label_create_user)).setTag(createUser);
+    		}
+    		
+    		User assignUser = findUserById(_Task.getAssignUser());
+    		if(assignUser != null) {
+    			((TextView)findViewById(R.id.task_detail_label_assign_user)).setText(assignUser.getUserName());
+    			((TextView)findViewById(R.id.task_detail_label_assign_user)).setTag(assignUser);
     		}
     	}
     }

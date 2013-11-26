@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import db
+import time
 from error import *
 from utils import func_return
 from datetime import datetime
@@ -20,7 +21,10 @@ def get_tasks(dic):
 						status, 
 						user_id, 
 						create_time, 
-						update_time 
+						update_time,
+						expect_date,
+						priority,
+						assign_user
 				FROM tasks WHERE status <> %d''' % __TASK_DELETE_FLAG
 
 	sql_param = []
@@ -64,7 +68,10 @@ def get_tasks(dic):
 				'status': row[4],
 				'user_id': row[5],
 				'create_time': row[6],
-				'update_time': row[7]
+				'update_time': row[7],
+				'expect_date': row[8],
+				'priority': row[9],
+				'assign_user': row[10]
 			})
 		return func_return(True, tasks) 
 	except Exception, e:
@@ -84,19 +91,33 @@ def add_task(dic):
 	if pid is None:
 		return func_return(False, ERR_102)
 
+	exp = dic['exp']
+	if exp is None:	
+		exp = time.strftime('%Y-%m-%d',time.localtime())
+
+	priority = dic['priority']
+	if priority is None: priority = 0;	
+
+	assign_user = dic['ass']
+	if assign_user is None: 
+		assign_user = uid;	
+
 	sql_str = '''INSERT INTO tasks(content, 
 								   type, 
 								   project_id,
 								   status, 
 								   user_id,	
 								   create_time, 
-								   update_time) 
-				VALUES(%s, %s, %s, %s, %s, now(), now())'''
+								   update_time,
+								   expect_date,
+								   priority,
+								   assign_user) 
+				VALUES(%s, %s, %s, %s, %s, now(), now(), %s, %s, %s)'''
 
 	t = dic['t']
 	if t is None: t = __DEFALUT_TASK_TYPE
 
-	sql_param = (content, t, pid, __DEFALUT_TASK_STATUS, uid)
+	sql_param = (content, t, pid, __DEFALUT_TASK_STATUS, uid, exp, priority, assign_user)
 
 	r = db.exec_command(sql_str, sql_param)
 	if not r['ret_res']: return r;
@@ -129,6 +150,21 @@ def modify_task(dic):
 	if dic['t'] is not None:
 		sql_str += ',type=%s'
 		sql_param.append(dic['t'])
+		is_update = True
+
+	if dic['exp'] is not None:
+		sql_str += ',expect_date=%s'
+		sql_param.append(dic['exp'])
+		is_update = True
+
+	if dic['priority'] is not None:
+		sql_str += ',priority=%s'
+		sql_param.append(dic['priority'])
+		is_update = True
+
+	if dic['ass'] is not None:
+		sql_str += ',assign_user=%s'
+		sql_param.append(dic['ass'])
 		is_update = True
 
 	if is_update:
