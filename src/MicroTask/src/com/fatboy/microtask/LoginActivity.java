@@ -1,5 +1,11 @@
 package com.fatboy.microtask;
 
+import java.util.List;
+
+import com.fatboy.microtask.models.Global;
+import com.fatboy.microtask.models.User;
+import com.fatboy.microtask.visitors.UserVisitor;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -21,17 +27,6 @@ import android.widget.TextView;
  * well.
  */
 public class LoginActivity extends Activity {
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"foo@example.com:hello", "bar@example.com:world" };
-
-	/**
-	 * The default email to populate the email field with.
-	 */
-	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
@@ -55,12 +50,12 @@ public class LoginActivity extends Activity {
 
 		setContentView(R.layout.activity_login);
 
-		// Set up the login form.
-		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
-		mEmailView = (EditText) findViewById(R.id.email);
-		mEmailView.setText(mEmail);
+		// Set up the login form.		
+		mEmailView = (EditText) findViewById(R.id.userName);
+		mEmailView.setText("patrick");
 
 		mPasswordView = (EditText) findViewById(R.id.password);
+		mPasswordView.setText("123456789");
 		mPasswordView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override
@@ -131,10 +126,6 @@ public class LoginActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@")) {
-			mEmailView.setError(getString(R.string.error_invalid_email));
-			focusView = mEmailView;
-			cancel = true;
 		}
 
 		if (cancel) {
@@ -148,12 +139,6 @@ public class LoginActivity extends Activity {
 			showProgress(true);
 			mAuthTask = new UserLoginTask();
 			mAuthTask.execute((Void) null);
-			
-			Intent intent = new Intent();
-            intent.setClass(LoginActivity.this, ProjectListActivity.class);
-            intent.putExtra("userId", 1);
-            startActivity(intent); 
-            this.finish();
 		}
 	}
 
@@ -205,25 +190,27 @@ public class LoginActivity extends Activity {
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
 
-			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
+			UserVisitor v = new UserVisitor();
+			List<User> users = v.getUsers();
+			
+			if(users == null || users.size() == 0) {
 				return false;
 			}
+			
+			Global g = (Global)LoginActivity.this.getApplicationContext(); 
+			g.setUsers(users);
 
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mEmail)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
+			for (User user : users) {
+				if(user.getUserName().equals(mEmail)) {
+					if(user.getPasssword().equals(mPassword)) {
+						g.setCurrentUser(user);
+						return true;
+					}
 				}
 			}
-
-			// TODO: register the new account here.
-			return true;
+			
+			return false;
 		}
 
 		@Override
@@ -232,7 +219,12 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 
 			if (success) {
+				
+				Intent intent = new Intent();
+	            intent.setClass(LoginActivity.this, ProjectListActivity.class);
+	            startActivity(intent); 
 				finish();
+				
 			} else {
 				mPasswordView
 						.setError(getString(R.string.error_incorrect_password));

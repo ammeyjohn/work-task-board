@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.fatboy.microtask.models.Global;
 import com.fatboy.microtask.models.Task;
 import com.fatboy.microtask.models.User;
 import com.fatboy.microtask.utils.Utils;
@@ -38,16 +39,36 @@ public class TaskDetailActivity extends Activity {
 
 	final static int WHAT_INIT_USER = 1;
 	final static int DATE_DIALOG_ID = 1;
+	
 	private Task _Task = null;
 	private int _ProjectId = -1;
-	private int _UserId = 1;
 	private Boolean _InUpdateMode = false;
-	private List<User> _Users = null;
+	
+	private TextView mIdView;
+	private TextView mStatusView;
+	private TextView mContentView;
+	private TextView mCreateUserView;
+	private TextView mAssignUserView;
+	private TextView mCreateTimeView;
+	private TextView mUpdateTimeView;
+	private TextView mExpectDateView;
+	private TextView mPriorityView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_task_detail);
+		
+		// Retrieve all components.
+		mIdView = (TextView)findViewById(R.id.task_detail_label_task_id);
+		mStatusView = (TextView)findViewById(R.id.task_detail_label_task_status);
+		mContentView = (TextView)findViewById(R.id.task_detail_label_task_content);
+		mCreateUserView = (TextView)findViewById(R.id.task_detail_label_create_user);
+		mAssignUserView = (TextView)findViewById(R.id.task_detail_label_assign_user);
+		mCreateTimeView = (TextView)findViewById(R.id.task_detail_label_create_time);
+		mUpdateTimeView = (TextView)findViewById(R.id.task_detail_label_update_time);
+		mExpectDateView = (TextView)findViewById(R.id.task_detail_label_except_date);
+		mPriorityView = (TextView)findViewById(R.id.task_detail_label_task_priority);
 		
 		// Initialize the action bar.
 		ActionBar actionBar = this.getActionBar();
@@ -60,15 +81,10 @@ public class TaskDetailActivity extends Activity {
 		Intent intent = getIntent();
 		_Task = (Task)intent.getSerializableExtra("tag");
 		_ProjectId = intent.getIntExtra("projectId", _ProjectId);
-		_UserId = intent.getIntExtra("userId", _UserId);
 		_InUpdateMode = (_Task != null);
 		
-		// Binding click event to button on title bar.
-		Button btn_save = (Button)findViewById(R.id.action_titlebar_save);
-		btn_save.setOnClickListener(new ButtonSaveListener());
-
-		Button btn_back = (Button)findViewById(R.id.action_titlebar_back);
-		btn_back.setOnClickListener(new ButtonBackListener());
+		// To initialize activity by given task.
+		initializeActivity();
 		
 		// Binding click event to table rows.
 		bindingStatusRowClickEvent();
@@ -76,24 +92,12 @@ public class TaskDetailActivity extends Activity {
 		bindingExpectDateRowClickEvent();
 		bindingPriorityRowClickEvent();
 		
-		// Do user loading.
-		loadUsers();
-	}
-	
-	private void loadUsers() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				UserVisitor v = new UserVisitor();
-				_Users = v.getUsers();
-				
-				if(_Users != null) {
-			        Message msg = new Message();
-			        msg.what = WHAT_INIT_USER;
-			        handler.sendMessage(msg);
-				}
-			}
-		}).start();
+		// Binding click event to button on title bar.
+//		Button btn_save = (Button)findViewById(R.id.action_titlebar_save);
+//		btn_save.setOnClickListener(new ButtonSaveListener());
+//
+//		Button btn_back = (Button)findViewById(R.id.action_titlebar_back);
+//		btn_back.setOnClickListener(new ButtonBackListener());		
 	}
 	
 	private void bindingStatusRowClickEvent() {
@@ -164,46 +168,46 @@ public class TaskDetailActivity extends Activity {
 		});
 	}
 
-	private void bindingUserRowClickEvent(final TableRow row, final TextView view, final String title) {		
-		row.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View v) {
-				String[] names = new String[_Users.size()];
-				for(int i = 0; i < _Users.size(); i++) {
-					User user = _Users.get(i);
-					names[i] = user.getUserName();
-				}
-				final SingleChoiceClick onChoiceClick = new SingleChoiceClick();
-				
-				int index = 0;
-				User tag = (User)view.getTag();
-				if(tag != null) {
-					for(int i = 0; i < _Users.size(); i++) {
-						User user = _Users.get(i);
-						if(user.getUserId() == tag.getUserId()) {
-							index = i;
-							break;
-						}
-					}
-				}
-				AlertDialog.Builder builder = new Builder(TaskDetailActivity.this);
-				builder.setTitle(title);
-				builder.setSingleChoiceItems(names, index, onChoiceClick);				
-				builder.setNegativeButton(getString(R.string.task_detail_dialog_cancel_button), null);
-				builder.setPositiveButton(getString(R.string.task_detail_dialog_ok_button), 
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								int index = onChoiceClick.ChoiceIndex;
-								User user = _Users.get(index);
-								view.setText(user.getUserName());
-								view.setTag(user);
-							}
-						});
-				builder.create().show();	
-			}
-		});
-	}
+//	private void bindingUserRowClickEvent(final TableRow row, final TextView view, final String title) {		
+//		row.setOnClickListener(new OnClickListener(){
+//			@Override
+//			public void onClick(View v) {
+//				String[] names = new String[_Users.size()];
+//				for(int i = 0; i < _Users.size(); i++) {
+//					User user = _Users.get(i);
+//					names[i] = user.getUserName();
+//				}
+//				final SingleChoiceClick onChoiceClick = new SingleChoiceClick();
+//				
+//				int index = 0;
+//				User tag = (User)view.getTag();
+//				if(tag != null) {
+//					for(int i = 0; i < _Users.size(); i++) {
+//						User user = _Users.get(i);
+//						if(user.getUserId() == tag.getUserId()) {
+//							index = i;
+//							break;
+//						}
+//					}
+//				}
+//				AlertDialog.Builder builder = new Builder(TaskDetailActivity.this);
+//				builder.setTitle(title);
+//				builder.setSingleChoiceItems(names, index, onChoiceClick);				
+//				builder.setNegativeButton(getString(R.string.task_detail_dialog_cancel_button), null);
+//				builder.setPositiveButton(getString(R.string.task_detail_dialog_ok_button), 
+//						new DialogInterface.OnClickListener() {
+//							@Override
+//							public void onClick(DialogInterface dialog, int which) {
+//								int index = onChoiceClick.ChoiceIndex;
+//								User user = _Users.get(index);
+//								view.setText(user.getUserName());
+//								view.setTag(user);
+//							}
+//						});
+//				builder.create().show();	
+//			}
+//		});
+//	}
 	
 	private void bindingExpectDateRowClickEvent() {
 		TableRow row = (TableRow)findViewById(R.id.tr_task_detail_expect_date);
@@ -281,27 +285,6 @@ public class TaskDetailActivity extends Activity {
         }  
         return null;  
     }  
-	
-	@SuppressLint("HandlerLeak")
-	final Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-        	switch(msg.what) {
-        	case WHAT_INIT_USER:
-				// Refresh create user or assign user.
-				refreshUsers();
-
-				// To initialize activity by given task.
-				initializeActivity();
-				
-				TaskDetailActivity that = TaskDetailActivity.this;
-				TableRow rowAssignUser = (TableRow)findViewById(R.id.tr_task_detail_assign_user);
-				TextView lblAssignUser = (TextView)that.findViewById(R.id.task_detail_label_assign_user);
-				String title1 = getString(R.string.task_detail_dialog_title_assign_user);
-				bindingUserRowClickEvent(rowAssignUser, lblAssignUser, title1);
-        		break;
-        	}
-        }
-    };
 		
 	class ButtonBackListener implements OnClickListener {
 
@@ -322,26 +305,26 @@ public class TaskDetailActivity extends Activity {
 		@Override
 		public void onClick(View arg0) {
 			
-    		int status = Integer.parseInt(((TextView)findViewById(R.id.task_detail_label_task_status)).getTag().toString());
-    		int priority = Integer.parseInt(((TextView)findViewById(R.id.task_detail_label_task_priority)).getText().toString());
-    		Date expect_date =(Date)((TextView)findViewById(R.id.task_detail_label_except_date)).getTag();
-    		String content = ((TextView)findViewById(R.id.task_detail_label_task_content)).getTag().toString();
-    		
-    		User assign_user = (User)((TextView)findViewById(R.id.task_detail_label_assign_user)).getTag();
-    		int assign_user_id = assign_user.getUserId();
-			
-			if(_Task == null) {
-				_Task = new Task();
-			}
-			_Task.setStatus(status);
-			_Task.setAssignUser(assign_user_id);
-			_Task.setPriority(priority);
-			_Task.setTaskContent(content);
-			_Task.setExpectDate(expect_date);
-			_Task.setProjectId(_ProjectId);
-			_Task.setUserId(_UserId);
-			
-			createTask(_Task);
+//    		int status = Integer.parseInt(((TextView)findViewById(R.id.task_detail_label_task_status)).getTag().toString());
+//    		int priority = Integer.parseInt(((TextView)findViewById(R.id.task_detail_label_task_priority)).getText().toString());
+//    		Date expect_date =(Date)((TextView)findViewById(R.id.task_detail_label_except_date)).getTag();
+//    		String content = ((TextView)findViewById(R.id.task_detail_label_task_content)).getTag().toString();
+//    		
+//    		User assign_user = (User)((TextView)findViewById(R.id.task_detail_label_assign_user)).getTag();
+//    		int assign_user_id = assign_user.getUserId();
+//			
+//			if(_Task == null) {
+//				_Task = new Task();
+//			}
+//			_Task.setStatus(status);
+//			_Task.setAssignUser(assign_user_id);
+//			_Task.setPriority(priority);
+//			_Task.setTaskContent(content);
+//			_Task.setExpectDate(expect_date);
+//			_Task.setProjectId(_ProjectId);
+//			_Task.setUserId(_UserId);
+//			
+//			createTask(_Task);
 		}
 		
 	}
@@ -367,7 +350,6 @@ public class TaskDetailActivity extends Activity {
                 Intent intent = new Intent();     
                 intent.setClass(TaskDetailActivity.this, TaskListActivity.class);
                 intent.putExtra("id", _ProjectId);
-                intent.putExtra("userId", _UserId);
                 startActivity(intent);  
                 TaskDetailActivity.this.finish();
 			}
@@ -385,68 +367,34 @@ public class TaskDetailActivity extends Activity {
 	
     private void initializeActivity() {
     	if(!_InUpdateMode) {
-    		((TextView)findViewById(R.id.task_detail_label_task_id)).setText("");
-    		((TextView)findViewById(R.id.task_detail_label_task_status)).setText("待创建");
-    		((TextView)findViewById(R.id.task_detail_label_task_status)).setTag(1);
-    		((TextView)findViewById(R.id.task_detail_label_task_content)).setText("");
+    		mIdView.setText("");
     		
-    		User user = findUserById(_UserId);
-    		if(user != null) {
-    			((TextView)findViewById(R.id.task_detail_label_create_user)).setText(user.getUserName());
-    			((TextView)findViewById(R.id.task_detail_label_create_user)).setTag(user);
-    			((TextView)findViewById(R.id.task_detail_label_assign_user)).setText(user.getUserName());
-    			((TextView)findViewById(R.id.task_detail_label_assign_user)).setTag(user);
-    		}
+    		mStatusView.setText("");
+    		mStatusView.setTag(1);
+    		
+    		mContentView.setText("");
+    		mContentView.setTag("");
     		
     		Date now = new Date();
-    		((TextView)findViewById(R.id.task_detail_label_create_time)).setText(Utils.getDateString(now));
-    		((TextView)findViewById(R.id.task_detail_label_create_time)).setTag(now);
-    		((TextView)findViewById(R.id.task_detail_label_update_time)).setText(Utils.getDateString(now));
-    		((TextView)findViewById(R.id.task_detail_label_update_time)).setTag(now);
-    		((TextView)findViewById(R.id.task_detail_label_except_date)).setText(Utils.getDateString(now));
-    		((TextView)findViewById(R.id.task_detail_label_except_date)).setTag(now);
-    		((TextView)findViewById(R.id.task_detail_label_task_priority)).setText("1");
+    		mCreateTimeView.setText(Utils.getDateTimeString(now));
+    		mCreateTimeView.setTag(now);
+    		mUpdateTimeView.setText(Utils.getDateTimeString(now));
+    		mUpdateTimeView.setTag(now);
+    		mExpectDateView.setText(Utils.getDateTimeString(now));
+    		mExpectDateView.setTag(now);
+    		
+    		Global g = (Global)this.getApplicationContext();
+    		User user = g.getCurrentUser();
+    		mCreateUserView.setText(user.getUserName());
+    		mCreateUserView.setTag(user);
+    		mAssignUserView.setText(user.getUserName());
+    		mAssignUserView.setTag(user);
+    		
+    		mPriorityView.setText("1");
+    		mPriorityView.setTag(1);
     		
     	} else {
-    		((TextView)findViewById(R.id.task_detail_label_task_id)).setText(Integer.toString(_Task.getTaskId()));
-    		((TextView)findViewById(R.id.task_detail_label_create_time)).setText(_Task.getCreateTimeString());
-    		((TextView)findViewById(R.id.task_detail_label_update_time)).setText(_Task.getUpdateTimeString());
-    		((TextView)findViewById(R.id.task_detail_label_task_priority)).setText("1");
-    		((TextView)findViewById(R.id.task_detail_label_except_date)).setText(_Task.getUpdateTimeString());
     		
-    		TextView txtStatus = (TextView)findViewById(R.id.task_detail_label_task_status);
-    		txtStatus.setTag(_Task.getStatus());
-			txtStatus.setText(_Task.getStatusString());
-
-    		String content = _Task.getTaskContent();
-    		TextView text_cont = (TextView)findViewById(R.id.task_detail_label_task_content);
-    		text_cont.setTag(content);
-    		text_cont.setText(Utils.getNeglectString(15, content));
     	}
     }
-
-    private void refreshUsers() {
-    	if(_InUpdateMode) {
-    		User createUser = findUserById(_Task.getUserId());
-    		if(createUser != null) {
-    			((TextView)findViewById(R.id.task_detail_label_create_user)).setText(createUser.getUserName());
-    			((TextView)findViewById(R.id.task_detail_label_create_user)).setTag(createUser);
-    		}
-    		
-    		User assignUser = findUserById(_Task.getAssignUser());
-    		if(assignUser != null) {
-    			((TextView)findViewById(R.id.task_detail_label_assign_user)).setText(assignUser.getUserName());
-    			((TextView)findViewById(R.id.task_detail_label_assign_user)).setTag(assignUser);
-    		}
-    	}
-    }
-
-	private User findUserById(int userId) {
-		for(User user : _Users) {
-			if(user.getUserId() == userId) {
-				return user;
-			}
-		}
-		return null;
-	}
 }

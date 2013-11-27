@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fatboy.microtask.models.Global;
 import com.fatboy.microtask.models.Task;
 import com.fatboy.microtask.visitors.TaskVisitor;
 
@@ -26,7 +27,7 @@ import android.widget.Toast;
 public class TaskListActivity extends Activity {
 
 	final static int WHAT_INIT_TASK_LIST = 1;
-	private int ProjectId = 0;
+	private int _ProjectId = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class TaskListActivity extends Activity {
 		
 		// Get relative project id.
 		Intent intent = getIntent();
-		ProjectId = intent.getIntExtra("id", 0);
+		_ProjectId = intent.getIntExtra("id", 0);
 		
 		// Initialize the task list.
 		loadTasks();
@@ -52,7 +53,7 @@ public class TaskListActivity extends Activity {
                 Intent intent = new Intent();     
                 intent.setClass(TaskListActivity.this, TaskDetailActivity.class);
                 intent.putExtra("tag", task);
-                intent.putExtra("projectId", ProjectId);
+                intent.putExtra("projectId", _ProjectId);
                 startActivity(intent);        		
 		    }
 		});
@@ -72,7 +73,7 @@ public class TaskListActivity extends Activity {
             case R.id.menu_create_task:
             	Intent intent = new Intent();
                 intent.setClass(TaskListActivity.this, TaskDetailActivity.class);
-            	intent.putExtra("projectId", ProjectId);
+            	intent.putExtra("projectId", _ProjectId);
                 startActivity(intent);
                 this.finish();
                 break;
@@ -96,8 +97,11 @@ public class TaskListActivity extends Activity {
 	}
 
 	private void initializeActivity() {
-		TaskVisitor tv = new TaskVisitor();
-		List<Task> tasks = tv.getTasks(ProjectId);
+		Global g = (Global)this.getApplicationContext();
+		int userId = g.getCurrentUser().getUserId();
+
+		TaskVisitor v = new TaskVisitor();
+		List<Task> tasks = v.getTasks(_ProjectId, userId);
 		if(tasks == null) {
 			String errmsg = getString(R.string.task_list_fail_to_retrieve_tasks);
 			Toast.makeText(TaskListActivity.this, errmsg, Toast.LENGTH_LONG).show();

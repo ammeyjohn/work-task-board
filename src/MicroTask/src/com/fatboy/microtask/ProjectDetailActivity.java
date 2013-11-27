@@ -1,6 +1,10 @@
 package com.fatboy.microtask;
 
+import java.util.Date;
+
+import com.fatboy.microtask.models.Global;
 import com.fatboy.microtask.models.Project;
+import com.fatboy.microtask.models.User;
 import com.fatboy.microtask.utils.Utils;
 import com.fatboy.microtask.visitors.ProjectVisitor;
 
@@ -12,6 +16,7 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -22,18 +27,33 @@ import android.widget.Toast;
 
 public class ProjectDetailActivity extends Activity {
 
-	private Project project = null;
-	private Boolean InUpdateMode = true;
+	final ProjectDetailActivity That = this;
+	
+	private Project _Project = null;
+	private Boolean _InUpdateMode = true;
+	
+	private TextView mIdView;
+	private TextView mNameView;
+	private TextView mDescView;
+	private TextView mUserView;
+	private TextView mTimeView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_project_detail);
 		
+		// Retrieves components.
+		mIdView = (TextView)findViewById(R.id.project_detail_label_project_id);
+		mNameView = (TextView)findViewById(R.id.project_detail_label_project_name);
+		mDescView = (TextView)findViewById(R.id.project_detail_label_project_desc);
+		mUserView = (TextView)findViewById(R.id.project_detail_label_project_user);
+		mTimeView = (TextView)findViewById(R.id.project_detail_label_project_time);
+		
 		// Get related Project object.
 		Intent intent = this.getIntent();
-		project = (Project)intent.getSerializableExtra("tag");
-		InUpdateMode = (project != null);
+		_Project = (Project)intent.getSerializableExtra("tag");
+		_InUpdateMode = (_Project != null);
 		initializeActivity();
 		
 		// Initialize the action bar.
@@ -51,24 +71,22 @@ public class ProjectDetailActivity extends Activity {
 		btn_back.setOnClickListener(new ButtonBackListener());
 		
 		// Binding click event to table row.
-		TableRow row_name = (TableRow)findViewById(R.id.tr_project_detail_project_name);
-		row_name.setOnClickListener(new OnClickListener(){
+		TableRow rowName = (TableRow)findViewById(R.id.tr_project_detail_project_name);
+		rowName.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
-				ProjectDetailActivity that = ProjectDetailActivity.this;
-				final TextView lbl_name = (TextView)that.findViewById(R.id.project_detail_label_project_name);
-				final EditText text_name = new EditText(ProjectDetailActivity.this);
-				text_name.setText(lbl_name.getText());
+				final EditText txtName = new EditText(That);
+				txtName.setText(mNameView.getText());
 				
-				AlertDialog.Builder builder = new Builder(ProjectDetailActivity.this);
+				AlertDialog.Builder builder = new Builder(That);
 				builder.setTitle(getString(R.string.project_detail_dialog_title_project_name));
-				builder.setView(text_name);
+				builder.setView(txtName);
 				builder.setPositiveButton(getString(R.string.project_detail_dialog_ok_button), 
 						new android.content.DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								lbl_name.setText(text_name.getText());
+								mNameView.setText(txtName.getText());
 							}
 						});
 				builder.setNegativeButton(getString(R.string.project_detail_dialog_cancel_button), null);
@@ -77,33 +95,31 @@ public class ProjectDetailActivity extends Activity {
 			
 		});
 		
-		TableRow row_desc = (TableRow)findViewById(R.id.tr_project_detail_project_desc);
-		row_desc.setOnClickListener(new OnClickListener(){
+		TableRow rowDesc = (TableRow)findViewById(R.id.tr_project_detail_project_desc);
+		rowDesc.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
-				ProjectDetailActivity that = ProjectDetailActivity.this;
-				final TextView lbl_desc = (TextView)that.findViewById(R.id.project_detail_label_project_desc);
-				final EditText text_desc = new EditText(ProjectDetailActivity.this);
-				text_desc.setHeight(300);
-				text_desc.setGravity(Gravity.LEFT | Gravity.TOP);
-				text_desc.setEnabled(true);
+				final EditText txtDesc = new EditText(ProjectDetailActivity.this);
+				txtDesc.setHeight(300);
+				txtDesc.setGravity(Gravity.LEFT | Gravity.TOP);
+				txtDesc.setEnabled(true);
 				
-				Object tag = lbl_desc.getTag();
+				Object tag = mDescView.getTag();
 				if(tag != null) {
-					text_desc.setText(Utils.getNeglectString(15, tag.toString()));
+					txtDesc.setText(tag.toString());
 				}
 				
-				AlertDialog.Builder builder = new Builder(ProjectDetailActivity.this);
+				AlertDialog.Builder builder = new Builder(That);
 				builder.setTitle(getString(R.string.project_detail_dialog_title_project_desc));
-				builder.setView(text_desc);
+				builder.setView(txtDesc);
 				builder.setPositiveButton(getString(R.string.project_detail_dialog_ok_button), 
 						new android.content.DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								String content = text_desc.getText().toString();
-								lbl_desc.setTag(content);
-								lbl_desc.setText(Utils.getNeglectString(15, content));
+								String content = txtDesc.getText().toString();
+								mDescView.setText(Utils.getNeglectString(25, content));
+								mDescView.setTag(content);
 							}
 						});
 				builder.setNegativeButton(getString(R.string.project_detail_dialog_cancel_button), null);
@@ -112,24 +128,47 @@ public class ProjectDetailActivity extends Activity {
 			
 		});
 	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)  {
+	    if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+	    	doBack();
+	        return true;
+	    }
+
+	    return super.onKeyDown(keyCode, event);
+	}
 
 	private void initializeActivity() {
-		if(project == null) {
-			((TextView)findViewById(R.id.project_detail_label_project_id)).setText("");
-			((TextView)findViewById(R.id.project_detail_label_project_name)).setText("");
-			((TextView)findViewById(R.id.project_detail_label_project_desc)).setText("");
-			((TextView)findViewById(R.id.project_detail_label_project_user)).setText("");
-			((TextView)findViewById(R.id.project_detail_label_project_time)).setText("");
+		
+		Global g = (Global)getApplicationContext();
+		
+		if(_Project == null) {
+			mIdView.setText("");
+			mNameView.setText("");
+			mDescView.setText("");
+			mDescView.setTag("");
+			
+			User user = g.getCurrentUser();
+			mUserView.setText(user.getUserName());
+			mUserView.setTag(user);
+
+			Date now = new Date();	
+			mTimeView.setText(Utils.getDateTimeString(now));
+			mTimeView.setTag(now);
 		} else {
-			((TextView)findViewById(R.id.project_detail_label_project_id)).setText(Integer.toString(project.getProjectId()));
-			((TextView)findViewById(R.id.project_detail_label_project_name)).setText(project.getProjectName());
-			((TextView)findViewById(R.id.project_detail_label_project_user)).setText(Integer.toString(project.getUserId()));
-			((TextView)findViewById(R.id.project_detail_label_project_time)).setText(project.getCreateTimeString());
-						
-			String content = project.getDescription();
-			TextView text_desc = (TextView)findViewById(R.id.project_detail_label_project_desc);
-			text_desc.setTag(content);
-			text_desc.setText(Utils.getNeglectString(15, content));
+			mIdView.setText(Integer.toString(_Project.getProjectId()));
+			mNameView.setText(_Project.getProjectName());
+			mDescView.setText(Utils.getNeglectString(25, _Project.getDescription()));
+			mDescView.setTag(_Project.getDescription());
+			
+			User user = Utils.findUserById(g.getUsers(), _Project.getUserId());
+			mUserView.setText(user.getUserName());
+			mUserView.setTag(user);
+
+			Date now = _Project.getCreateTime();
+			mTimeView.setText(Utils.getDateTimeString(now));
+			mTimeView.setTag(now);
 		}
 	}
 	
@@ -140,7 +179,7 @@ public class ProjectDetailActivity extends Activity {
 				Boolean result = true;
 
 				ProjectVisitor visitor = new ProjectVisitor();
-				if (InUpdateMode) {
+				if (_InUpdateMode) {
 					result = visitor.modifyProject(prj);
 				} else {
 					result = (visitor.addProject(prj) > -1);
@@ -150,13 +189,18 @@ public class ProjectDetailActivity extends Activity {
 					String errmsg = getString(R.string.project_detail_fail_to_save_project);
 					Toast.makeText(ProjectDetailActivity.this, errmsg, Toast.LENGTH_SHORT).show();
 				}
-				
-                Intent intent = new Intent();     
-                intent.setClass(ProjectDetailActivity.this, ProjectListActivity.class);
-                startActivity(intent);  
-                ProjectDetailActivity.this.finish();
+		
+				// Back to previous form.
+				doBack();
 			}
 		}).start();
+	}
+	
+	private void doBack(){
+        Intent intent = new Intent();     
+        intent.setClass(ProjectDetailActivity.this, ProjectListActivity.class);
+        startActivity(intent);  
+        finish();
 	}
 
 	class ButtonBackListener implements OnClickListener {
@@ -175,22 +219,16 @@ public class ProjectDetailActivity extends Activity {
 
 		@Override
 		public void onClick(View arg0) {
-
-			TextView text_name = (TextView)findViewById(R.id.project_detail_label_project_name);
-			TextView text_desc = (TextView)findViewById(R.id.project_detail_label_project_desc);
-
 			// Create project object.
-			Project prj = null;
-			if(InUpdateMode) {
-				prj = project;
-			} else {
-				prj = new Project();
-				prj.setUserId(1);
+			if(_Project == null) {
+				Global g = (Global)That.getApplicationContext();
+				_Project = new Project();
+				_Project.setUserId(g.getCurrentUser().getUserId());
 			}
-			prj.setProjectName(text_name.getText().toString());
-			prj.setDescription(text_desc.getText().toString());
+			_Project.setProjectName(mNameView.getText().toString());
+			_Project.setDescription(mDescView.getTag().toString());
 		
-			createProject(prj);
+			createProject(_Project);
 		}
 		
 	}

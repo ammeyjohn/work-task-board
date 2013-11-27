@@ -86,7 +86,7 @@
                     android:layout_height="13dip"
                     android:contentDescription="@string/image_view_disc"
                     android:src="@drawable/right_arrow"
-                    android:visibility="invisible" />
+                    android:visibility="visible" />
             </TableRow>
 
             <View

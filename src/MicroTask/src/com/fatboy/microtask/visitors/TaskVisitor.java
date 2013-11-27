@@ -33,12 +33,12 @@ public class TaskVisitor {
         return null;
 	}
 	
-	public List<Task> getTasks(int projectId) {
+	public List<Task> getTasks(int projectId, int userId) {
 		
 		String url = Network.BASE_URL + ACTION_TASK_LIST;
-		if(projectId >= 0) {
-			url += "?pid=" + projectId;
-		}
+		url += "?pid=" + projectId;
+		url += "&uid=" + userId;
+		
 		String html = Network.Requst(url);
 
         Gson gson = Utils.createGson();

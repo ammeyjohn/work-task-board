@@ -33,7 +33,7 @@ import android.widget.Toast;
 
 public class ProjectListActivity extends Activity {
 	
-	final static int WHAT_INIT_PROJECT_LIST = 1;
+	final static int WHAT_INIT_PROJECT_LIST = 1;	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class ProjectListActivity extends Activity {
 		switch(item.getItemId()) {
 		case Menu.FIRST:
 			// Show dialog to confirm deleting project.
-			String name = map.get("item_text_name").toString();
+			String name = map.get("project_item_text_name").toString();
 			AlertDialog.Builder builder = new Builder(ProjectListActivity.this);
 			builder.setMessage(String.format(getString(R.string.project_list_dialog_message), name));
 			builder.setTitle(getString(R.string.project_list_dialog_title));
@@ -151,6 +151,9 @@ public class ProjectListActivity extends Activity {
 				
 				if (r) {
 					loadProjects();
+				} else {
+					String errmsg = getString(R.string.project_list_fail_to_del_project);
+					Toast.makeText(ProjectListActivity.this, errmsg, Toast.LENGTH_LONG).show();
 				}
 			}
 		}).start();

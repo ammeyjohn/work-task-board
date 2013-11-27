@@ -2,7 +2,11 @@ package com.fatboy.microtask.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
 import android.annotation.SuppressLint;
+
+import com.fatboy.microtask.models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -25,6 +29,14 @@ public class Utils {
 		return _Formatter.format(time);
 	}
 	
+	@SuppressLint("SimpleDateFormat")
+	public static String getDateTimeString(Date time) {
+		if(_Formatter == null) {
+			_Formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		}
+		return _Formatter.format(time);
+	}
+	
 	public static String getNeglectString(int maxLength, String str) {
 		if(str == null || str.isEmpty())
 			return "";
@@ -33,5 +45,14 @@ public class Utils {
 			str += "...";
 		}
 		return str;		
+	}
+	
+	public static User findUserById(List<User> users, int userId) {
+		for(User user : users) {
+			if(user.getUserId() == userId) {
+				return user;
+			}
+		}
+		return null;
 	}
 }

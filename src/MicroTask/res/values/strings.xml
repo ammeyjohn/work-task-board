@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">MicroTask</string>
+    <string name="app_display">MicroTask</string>
 	<string name="content_description">Image</string>
 
     <string name="action_titlebar_save">保存</string>
@@ -17,9 +18,10 @@
     <string name="project_list_dialog_title">提示</string>
     <string name="project_list_dialog_ok_button">确认</string>
     <string name="project_list_dialog_cancel_button">取消</string>
-    <string name="project_list_fail_to_load_projects">无法获取最新的项目列表</string>
     <string name="context_menu_create_project">新建项目</string>
     <string name="context_menu_refresh_project_list">刷新项目列表</string>
+    <string name="project_list_fail_to_load_projects">无法获取最新的项目列表</string>
+    <string name="project_list_fail_to_del_project">删除项目失败</string>
     
     <!-- ProjectDetailActivity -->
     <string name="project_detail_label_project_id">项目编号</string>
