@@ -133,6 +133,10 @@ public class Task implements Serializable {
 	public void setExpectDate(Date expectDate) {
 		this.expectDate = expectDate;
 	}
+	
+	public String getExpectDateString() {
+		return Utils.getDateString(expectDate);
+	}
 
 	public int getAssignUser() {
 		return assignUser;

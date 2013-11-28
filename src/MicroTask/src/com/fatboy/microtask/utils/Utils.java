@@ -55,4 +55,8 @@ public class Utils {
 		}
 		return null;
 	}
+	
+	public static String[] getStatusText() {
+		return new String[]{ "已创建", "已分派", "已完成", "已确定" };
+	}
 }

@@ -105,6 +105,7 @@ public class TaskVisitor {
 		if (task != null) {
 			url += "?id=" + task.getTaskId();
 			url += "&c=" + URLEncoder.encode(task.getTaskContent());
+			url += "&s=" + task.getStatus();
 			url += "&uid=" + task.getUserId();
 			url += "&pid=" + task.getProjectId();
 			url += "&exp=" + Utils.getDateString(task.getExpectDate());

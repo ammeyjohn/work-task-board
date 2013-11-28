@@ -66,7 +66,7 @@ public class ProjectListActivity extends Activity {
 		        // Start task activity to show relative tasks.		        
                 Intent intent = new Intent();     
                 intent.setClass(ProjectListActivity.this, TaskListActivity.class);
-                intent.putExtra("id", Integer.parseInt(map.get("id").toString()));
+                intent.putExtra("projectId", Integer.parseInt(map.get("id").toString()));
                 startActivity(intent);               
 		    }
 		});

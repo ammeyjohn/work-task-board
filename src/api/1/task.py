@@ -42,7 +42,8 @@ def get_tasks(dic):
 			sql_param.append(dic['s'])
 
 		if dic['uid'] is not None:
-			sql_str += ' AND user_id IN (%s)'
+			sql_str += ' AND (user_id IN (%s) OR assign_user IN (%s))'
+			sql_param.append(dic['uid'])
 			sql_param.append(dic['uid'])
 
 		if dic['pid'] is not None:

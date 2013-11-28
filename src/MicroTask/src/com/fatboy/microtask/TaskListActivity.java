@@ -36,7 +36,7 @@ public class TaskListActivity extends Activity {
 		
 		// Get relative project id.
 		Intent intent = getIntent();
-		_ProjectId = intent.getIntExtra("id", 0);
+		_ProjectId = intent.getIntExtra("projectId", 0);
 		
 		// Initialize the task list.
 		loadTasks();
@@ -125,7 +125,7 @@ public class TaskListActivity extends Activity {
             map.put("task_item_image_icon", R.drawable.ic_task);
             map.put("task_item_text_content", task.getTaskContent());
             map.put("task_item_text_status", task.getStatusString());
-            map.put("task_item_text_update_time", task.getUpdateTimeString());
+            map.put("task_item_text_expect_date", task.getExpectDateString());
             map.put("tag", task);
             contents.add(map);
         }
@@ -137,11 +137,11 @@ public class TaskListActivity extends Activity {
                 new String[]{"task_item_image_icon",
                 			 "task_item_text_content",
                 			 "task_item_text_status",
-                			 "task_item_text_update_time"},
+                			 "task_item_text_expect_date"},
                 new int[]{R.id.task_item_image_icon,
                 		   R.id.task_item_text_content,
                 		   R.id.task_item_text_status,
-                		   R.id.task_item_text_update_time}
+                		   R.id.task_item_text_expect_date}
         );
 
         ListView lsvTasks = (ListView)findViewById(R.id.task_list);
