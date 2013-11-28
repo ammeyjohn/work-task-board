@@ -121,4 +121,17 @@ public class TaskVisitor {
         
         return api.getResult();
 	}
+	
+	public Boolean deleteTask(int taskId) {
+		String url = Network.BASE_URL + ACTION_TASK_DEL;
+		url += "?id=" + taskId;
+		
+		String html = Network.Requst(url);
+
+        Gson gson = Utils.createGson();
+        Type type = new TypeToken<ApiResponse<Integer>>(){}.getType();
+        ApiResponse<Integer> api = gson.fromJson(html, type);
+        
+        return api.getResult();
+	}
 }

@@ -42,5 +42,6 @@
         android:layout_width="wrap_content"  
         android:layout_alignParentRight="true"  
         android:checked="false"  
-        android:focusable="false" />  
+        android:focusable="false"
+        android:visibility="invisible" />  
 </RelativeLayout>  

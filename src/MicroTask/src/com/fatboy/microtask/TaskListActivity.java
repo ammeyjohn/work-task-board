@@ -14,12 +14,20 @@ import android.os.Handler;
 import android.os.Message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View.OnCreateContextMenuListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -77,9 +85,9 @@ public class TaskListActivity extends Activity {
                 startActivity(intent);
                 this.finish();
                 break;
-            case R.id.menu_delete_task:
-                Toast.makeText(this, "删除", Toast.LENGTH_LONG).show();
-                break;
+//            case R.id.menu_delete_task:
+//                Toast.makeText(this, "删除", Toast.LENGTH_LONG).show();
+//                break;
             case R.id.menu_refresh_task_list:
                 loadTasks();
                 break;
@@ -122,7 +130,7 @@ public class TaskListActivity extends Activity {
         	
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", task.getTaskId());
-            map.put("task_item_image_icon", R.drawable.ic_task);
+            map.put("task_item_image_icon", task.getStatusIcon());
             map.put("task_item_text_content", task.getTaskContent());
             map.put("task_item_text_status", task.getStatusString());
             map.put("task_item_text_expect_date", task.getExpectDateString());
@@ -146,7 +154,60 @@ public class TaskListActivity extends Activity {
 
         ListView lsvTasks = (ListView)findViewById(R.id.task_list);
         lsvTasks.setAdapter(adapter);
+        
+        lsvTasks.setOnCreateContextMenuListener(new OnCreateContextMenuListener(){
+			@Override
+			public void onCreateContextMenu(ContextMenu menu, View v,
+					ContextMenuInfo menuInfo) {
+				menu.setHeaderTitle(R.string.task_list_context_menu_header_title);
+				menu.add(0, 1, Menu.NONE, R.string.project_list_context_menu0_name);
+			}		
+		});
     }
+    
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		ListView lsvTasks = (ListView)findViewById(R.id.task_list);
+
+		@SuppressWarnings("unchecked")
+		final Map<String, Object> map = (Map<String, Object>)lsvTasks.getAdapter().getItem(info.position);
+		switch(item.getItemId()) {
+		case Menu.FIRST:
+			// Show dialog to confirm deleting project.
+			AlertDialog.Builder builder = new Builder(TaskListActivity.this);
+			builder.setMessage(getString(R.string.task_list_dialog_message));
+			builder.setTitle(getString(R.string.task_list_dialog_title));
+			builder.setPositiveButton(getString(R.string.task_list_dialog_ok_button), 
+					new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							deleteTask(Integer.parseInt(map.get("id").toString()));
+						}
+					});
+			builder.setNegativeButton(getString(R.string.project_list_dialog_cancel_button), null);
+			builder.create().show();
+			break;
+		}
+		return false; 
+	}
+	
+	private void deleteTask(final int taskId) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				TaskVisitor v = new TaskVisitor();
+				Boolean r = v.deleteTask(taskId);
+				
+				if (r) {
+					loadTasks();
+				} else {
+					String errmsg = getString(R.string.task_list_fail_to_del_task);
+					Toast.makeText(TaskListActivity.this, errmsg, Toast.LENGTH_LONG).show();
+				}
+			}
+		}).start();
+	}
 	
 	@SuppressLint("HandlerLeak")
 	final Handler handler = new Handler() {

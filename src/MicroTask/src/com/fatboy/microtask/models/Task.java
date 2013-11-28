@@ -3,6 +3,7 @@ package com.fatboy.microtask.models;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fatboy.microtask.R;
 import com.fatboy.microtask.utils.Utils;
 import com.google.gson.annotations.SerializedName;
 
@@ -74,12 +75,24 @@ public class Task implements Serializable {
 	public String getStatusString() {
 		switch(status) {
 		case -1: return "已删除";
+		case 0: return "已取消";
 		case 1: return "已创建";
 		case 2: return "已分配";
 		case 3: return "已完成";
 		case 4: return "已确认";
 		}
 		return Integer.toString(status);
+	}
+	
+	public int getStatusIcon() {
+		switch(status) {
+		case 0: return R.drawable.ic_cancel;
+		case 1: return R.drawable.ic_new_task;
+		case 2: return R.drawable.ic_assign;
+		case 3: return R.drawable.ic_icon;
+		case 4: return R.drawable.ic_confirm;
+		}
+		return R.drawable.ic_task;
 	}
 
 	public void setStatus(int status) {

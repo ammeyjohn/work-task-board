@@ -57,6 +57,6 @@ public class Utils {
 	}
 	
 	public static String[] getStatusText() {
-		return new String[]{ "已创建", "已分派", "已完成", "已确定" };
+		return new String[]{"已取消", "已创建", "已分派", "已完成", "已确定" };
 	}
 }

@@ -1,6 +1,5 @@
 package com.fatboy.microtask;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +11,6 @@ import com.fatboy.microtask.utils.Utils;
 import com.fatboy.microtask.visitors.TaskVisitor;
 
 import android.os.Bundle;
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -118,7 +116,7 @@ public class TaskDetailActivity extends Activity {
 				int index = 0;
 				Object tag = mStatusView.getTag();
 				if(tag != null) {
-					index = Integer.parseInt(tag.toString())-1;
+					index = Integer.parseInt(tag.toString());
 				}
 				AlertDialog.Builder builder = new Builder(TaskDetailActivity.this);
 				builder.setTitle(getString(R.string.task_detail_dialog_title_task_status));
@@ -130,7 +128,7 @@ public class TaskDetailActivity extends Activity {
 							public void onClick(DialogInterface dialog, int which) {
 								int index = onChoiceClick.ChoiceIndex;
 								mStatusView.setText(status[index]);
-								mStatusView.setTag(index+1);
+								mStatusView.setTag(index);
 							}
 						});
 				builder.create().show();	

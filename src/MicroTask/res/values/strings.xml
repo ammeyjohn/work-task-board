@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MicroTask</string>
+    <string name="app_name">微任务</string>
     <string name="app_display">MicroTask</string>
 	<string name="content_description">Image</string>
 
@@ -39,7 +39,14 @@
     <string name="context_menu_create_task">新建任务</string>
     <string name="context_menu_delete_task">删除任务</string>
     <string name="context_menu_refresh_task_list">刷新任务列表</string>
+    <string name="task_list_context_menu_header_title">任务操作</string>
+    <string name="task_list_context_menu0_name">删除任务</string>
     <string name="task_list_fail_to_retrieve_tasks">无法加载任务列表</string>
+    <string name="task_list_dialog_message">确认删除选中的任务吗？</string>
+    <string name="task_list_dialog_title">提示</string>
+    <string name="task_list_dialog_ok_button">确认</string>
+    <string name="task_list_dialog_cancel_button">取消</string>    
+    <string name="task_list_fail_to_del_task">删除任务失败</string>
 
     <!-- TaskDetailActivity -->
     <string name="task_detail_label_task_id">任务编号</string>
