@@ -26,7 +26,8 @@ public class TaskVisitor {
         Gson gson = Utils.createGson();
         Type type = new TypeToken<ApiResponse<List<Task>>>(){}.getType();
         ApiResponse<List<Task>> api = gson.fromJson(html, type);
-        
+       
+        if(api == null) return null;
         if(api.getResult()) {
         	return api.getData();
         }
@@ -45,6 +46,7 @@ public class TaskVisitor {
         Type type = new TypeToken<ApiResponse<List<Task>>>(){}.getType();
         ApiResponse<List<Task>> api = gson.fromJson(html, type);
         
+        if(api == null) return null;
         if(api.getResult()) {
         	return api.getData();
         }
@@ -63,6 +65,7 @@ public class TaskVisitor {
         Type type = new TypeToken<ApiResponse<List<Task>>>(){}.getType();
         ApiResponse<List<Task>> api = gson.fromJson(html, type);
         
+        if(api == null) return null;
         if(api.getResult()) {
         	List<Task> tasks = api.getData();
         	if(tasks.size() > 0) {
@@ -92,6 +95,7 @@ public class TaskVisitor {
         Type type = new TypeToken<ApiResponse<Integer>>(){}.getType();
         ApiResponse<Integer> api = gson.fromJson(html, type);
         
+        if(api == null) return -1;
         if(api.getResult()) {
         	return api.getData();
         }
@@ -119,6 +123,7 @@ public class TaskVisitor {
         Type type = new TypeToken<ApiResponse<Integer>>(){}.getType();
         ApiResponse<Integer> api = gson.fromJson(html, type);
         
+        if(api == null) return false;
         return api.getResult();
 	}
 	
@@ -132,6 +137,7 @@ public class TaskVisitor {
         Type type = new TypeToken<ApiResponse<Integer>>(){}.getType();
         ApiResponse<Integer> api = gson.fromJson(html, type);
         
+        if(api == null) return false;
         return api.getResult();
 	}
 }

@@ -23,6 +23,7 @@ public class UserVisitor {
         Type type = new TypeToken<ApiResponse<List<User>>>(){}.getType();
         ApiResponse<List<User>> api = gson.fromJson(html, type);
         
+        if(api == null) return null;
         if(api.getResult()) {
         	return api.getData();
         }

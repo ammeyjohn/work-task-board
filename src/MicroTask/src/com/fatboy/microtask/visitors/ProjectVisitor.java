@@ -26,6 +26,7 @@ public class ProjectVisitor {
         Type type = new TypeToken<ApiResponse<List<Project>>>(){}.getType();
         ApiResponse<List<Project>> api = gson.fromJson(html, type);
         
+        if(api == null) return null;
         if(api.getResult()) {
         	return api.getData();
         }
@@ -50,6 +51,7 @@ public class ProjectVisitor {
         Type type = new TypeToken<ApiResponse<Integer>>(){}.getType();
         ApiResponse<Integer> api = gson.fromJson(html, type);
         
+        if(api == null) return -1;
         if(api.getResult()) {
         	return api.getData();
         }
@@ -75,6 +77,7 @@ public class ProjectVisitor {
         Type type = new TypeToken<ApiResponse<Integer>>(){}.getType();
         ApiResponse<Integer> api = gson.fromJson(html, type);
         
+        if(api == null) return false;
         return api.getResult();
 	}
 	
@@ -88,6 +91,7 @@ public class ProjectVisitor {
         Type type = new TypeToken<ApiResponse<Integer>>(){}.getType();
         ApiResponse<Integer> api = gson.fromJson(html, type);
         
+        if(api == null) return false;
         return api.getResult();
 	}
 }
