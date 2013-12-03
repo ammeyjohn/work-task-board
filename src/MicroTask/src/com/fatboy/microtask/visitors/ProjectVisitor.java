@@ -18,8 +18,10 @@ public class ProjectVisitor {
 	public final static String ACTION_PROJECT_DEL  = "/project/del";
 	public final static String ACTION_PROJECT_MODIFY  = "/project/modify";
 	
-	public List<Project> getProjects() {
+	public List<Project> getProjects(int userId) {
 		String url = Network.BASE_URL + ACTION_PROJECT_LIST;
+		url += "?uid=" + userId;
+
 		String html = Network.Requst(url);
 
         Gson gson = Utils.createGson(); 
@@ -38,7 +40,7 @@ public class ProjectVisitor {
 	public int addProject(Project project) {
 		String url = Network.BASE_URL + ACTION_PROJECT_ADD + "?";
 		url += "n=" + URLEncoder.encode(project.getProjectName());
-		url += "&uid=1";
+		url += "&uid=" + project.getUserId();
 		
 		String desc = project.getDescription();
 		if(desc != null && !desc.isEmpty()) {

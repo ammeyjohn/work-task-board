@@ -34,11 +34,15 @@ public class TaskVisitor {
         return null;
 	}
 	
-	public List<Task> getTasks(int projectId, int userId) {
+	public List<Task> getTasks(int projectId, int userId, String status) {
 		
 		String url = Network.BASE_URL + ACTION_TASK_LIST;
 		url += "?pid=" + projectId;
 		url += "&uid=" + userId;
+		
+		if(status != null) {
+			url += "&s=" + status;
+		}
 		
 		String html = Network.Requst(url);
 

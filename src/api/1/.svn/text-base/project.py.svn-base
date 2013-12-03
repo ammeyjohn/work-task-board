@@ -11,10 +11,23 @@ __PROJ_DELETE_FLAG = -1
 
 __DEFALUT_PROJECT_STATUS = 1
 
-def get_projects():
-	sql_str = '''SELECT id, name, status, user_id, description, create_time 
-			  FROM projects WHERE status > 0 ORDER BY id'''
-	r = db.exec_query(sql_str)	
+def get_projects(dic):
+	sql_param = []
+	sql_str = '''SELECT id, name, status, user_id, description, create_time FROM projects WHERE status > 0 '''
+
+	uid = dic['uid']
+	if uid is not None:
+		sql_str += ''' 	AND (user_id IN (%s)
+						OR id IN (
+							SELECT DISTINCT project_id FROM tasks 
+							WHERE user_id IN (%s) OR assign_user IN (%s) AND status >= 0
+						)) '''
+		sql_param.append(uid)
+		sql_param.append(uid)
+		sql_param.append(uid)
+	sql_str += ' ORDER BY id'
+
+	r = db.exec_query(sql_str, sql_param)	
 	if not r['ret_res']: return r
 
 	projs = []

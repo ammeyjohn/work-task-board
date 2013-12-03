@@ -51,7 +51,8 @@ ACTION_PROJECT_DEL    = 'project_del'
 
 @get('/projects/list')
 def list_projects():
-	projs = project.get_projects()
+	req_get_dic = api_get(request, ['uid'])
+	projs = project.get_projects(req_get_dic)
 	return api_return(ACTION_PROJECT_LIST, projs)
 
 @get('/project/add')

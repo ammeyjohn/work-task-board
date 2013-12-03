@@ -1,5 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/menu_create_task" android:title="@string/context_menu_create_task"></item>
-<!--     <item android:id="@+id/menu_delete_task" android:title="@string/context_menu_delete_task"></item> -->
+    <item android:id="@+id/menu_uncomplete_task" android:title="@string/context_menu_uncomplete_task"></item>
     <item android:id="@+id/menu_refresh_task_list" android:title="@string/context_menu_refresh_task_list"></item>
 </menu>

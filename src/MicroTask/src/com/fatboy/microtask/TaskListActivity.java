@@ -20,6 +20,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -47,7 +48,7 @@ public class TaskListActivity extends Activity {
 		_ProjectId = intent.getIntExtra("projectId", 0);
 		
 		// Initialize the task list.
-		loadTasks();
+		loadTasks(true);
 		
 		// Attach events to ListView
 		ListView lsvTasks = (ListView)findViewById(R.id.task_list);
@@ -85,31 +86,55 @@ public class TaskListActivity extends Activity {
                 startActivity(intent);
                 this.finish();
                 break;
-//            case R.id.menu_delete_task:
-//                Toast.makeText(this, "删除", Toast.LENGTH_LONG).show();
-//                break;
+            case R.id.menu_uncomplete_task:
+            	loadTasks(false);
+            	this.setTitle(getText(R.string.context_menu_uncomplete_task));
+            	break;
             case R.id.menu_refresh_task_list:
-                loadTasks();
+                loadTasks(true);
                 break;
         }
         return false;
     }
 	
-	private void loadTasks() {
+	private void loadTasks(final Boolean showAll) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				initializeActivity();
+				initializeActivity(showAll);
 			}
 		}).start();
 	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)  {
+	    if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+	    	doBack();
+	        return true;
+	    }
 
-	private void initializeActivity() {
+	    return super.onKeyDown(keyCode, event);
+	}
+    
+    private void doBack() {
+        Intent intent = new Intent();     
+        intent.setClass(TaskListActivity.this, ProjectListActivity.class);
+        intent.putExtra("projectId", _ProjectId);
+        startActivity(intent);  
+        this.finish();
+    }
+
+	private void initializeActivity(Boolean showAll) {
 		Global g = (Global)this.getApplicationContext();
 		int userId = g.getCurrentUser().getUserId();
 
+		String status = null;
+		if(!showAll) {
+			status = "1,2";
+		}
+		
 		TaskVisitor v = new TaskVisitor();
-		List<Task> tasks = v.getTasks(_ProjectId, userId);
+		List<Task> tasks = v.getTasks(_ProjectId, userId, status);
 		if(tasks == null) {
 			String errmsg = getString(R.string.task_list_fail_to_retrieve_tasks);
 			Toast.makeText(TaskListActivity.this, errmsg, Toast.LENGTH_LONG).show();
@@ -200,7 +225,7 @@ public class TaskListActivity extends Activity {
 				Boolean r = v.deleteTask(taskId);
 				
 				if (r) {
-					loadTasks();
+					loadTasks(true);
 				} else {
 					String errmsg = getString(R.string.task_list_fail_to_del_task);
 					Toast.makeText(TaskListActivity.this, errmsg, Toast.LENGTH_LONG).show();
@@ -215,6 +240,7 @@ public class TaskListActivity extends Activity {
         	switch(msg.what) {
         	case WHAT_INIT_TASK_LIST:
         		refreshTaskList(msg);
+        		TaskListActivity.this.setTitle(getText(R.string.task_list_title));
         		break;
         	}
         }

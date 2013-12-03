@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fatboy.microtask.models.Global;
 import com.fatboy.microtask.models.Project;
 import com.fatboy.microtask.visitors.ProjectVisitor;
 
@@ -20,6 +21,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -160,8 +162,11 @@ public class ProjectListActivity extends Activity {
 	}
 	
 	private void initinalActivity() {		
+		Global g = (Global)this.getApplicationContext();
+		int userId = g.getCurrentUser().getUserId();
+		
 		ProjectVisitor v = new ProjectVisitor();
-		List<Project> projects = v.getProjects();
+		List<Project> projects = v.getProjects(userId);
 		if(projects == null) {
 			String errmsg = getString(R.string.project_list_fail_to_load_projects);
 			Toast.makeText(ProjectListActivity.this, errmsg, Toast.LENGTH_LONG).show();
@@ -209,6 +214,23 @@ public class ProjectListActivity extends Activity {
         ListView lsvProjects = (ListView)findViewById(R.id.project_list);
         lsvProjects.setAdapter(adapter);
     }
+    
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)  {
+	    if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+	    	doBack();
+	        return true;
+	    }
+
+	    return super.onKeyDown(keyCode, event);
+	}
+    
+    private void doBack() {
+        Intent intent = new Intent();     
+        intent.setClass(ProjectListActivity.this, LoginActivity.class);
+        startActivity(intent);  
+        this.finish();
+    }
 	
 	@SuppressLint("HandlerLeak")
 	private Handler handler = new Handler() {
@@ -218,6 +240,7 @@ public class ProjectListActivity extends Activity {
 				@SuppressWarnings("unchecked")
 				List<Project> projects = (List<Project>)msg.obj;
 				refreshProjects(projects);
+				ProjectListActivity.this.setTitle(getText(R.string.project_list_title));
 				break;
 			}
 		}		

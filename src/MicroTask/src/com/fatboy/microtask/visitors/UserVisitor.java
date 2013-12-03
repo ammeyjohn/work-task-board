@@ -1,10 +1,9 @@
 package com.fatboy.microtask.visitors;
 
-import com.fatboy.microtask.utils.*;
-
 import java.lang.reflect.Type;
 import java.util.List;
 
+import com.fatboy.microtask.utils.*;
 import com.fatboy.microtask.models.ApiResponse;
 import com.fatboy.microtask.models.User;
 import com.fatboy.microtask.utils.Network;

@@ -52,10 +52,10 @@ public class LoginActivity extends Activity {
 
 		// Set up the login form.		
 		mEmailView = (EditText) findViewById(R.id.userName);
-		mEmailView.setText("patrick");
+		// mEmailView.setText("patrick");
 
 		mPasswordView = (EditText) findViewById(R.id.password);
-		mPasswordView.setText("123456789");
+		// mPasswordView.setText("123456789");
 		mPasswordView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override
