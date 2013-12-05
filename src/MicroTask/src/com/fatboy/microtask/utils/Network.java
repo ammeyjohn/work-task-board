@@ -13,8 +13,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 public class Network {
 	
-	//public final static String BASE_URL = "http://worktaskboard.sinaapp.com";
-	public final static String BASE_URL = "http://10.0.2.2:8080";
+	public final static String BASE_URL = "http://worktaskboard.sinaapp.com";
+	//public final static String BASE_URL = "http://10.0.2.2:8080";
 	
 	public static String Requst(String url) {
 				
